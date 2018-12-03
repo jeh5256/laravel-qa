@@ -24,12 +24,13 @@
                                 type="text" 
                                 name="title" 
                                 id="question-title" 
-                                class="form-control {{ $errors->has('title') ? 'invalid' : ''}}" 
+                                class="form-control {{ $errors->has('title') ? 'is-invalid' : ''}}" 
+                                value="{{ old('title') }}"
                             />
 
                             @if ($errors->has('title'))
                                 <div class="invalid-feedback">
-                                    <strong> {{ $errors->has('title') }}</strong>
+                                    <strong> {{ $errors->first('title') }}</strong>
                                 </div>
                             @endif
 
@@ -37,15 +38,16 @@
                         <div class="form-group">
                             <label for="question-description">Question Description</label>
                             <textarea 
-                                class="form-control {{ $errors->has('body') ? 'invalid' : ''}}" 
-                                name="description" 
+                                class="form-control {{ $errors->has('body') ? 'is-invalid' : ''}}" 
+                                name="body" 
                                 id="question-description" 
-                                rows="10">
+                                rows="10"
+                            >{{ old('body') }}
                             </textarea>
 
                             @if ($errors->has('body'))
                                 <div class="invalid-feedback">
-                                    <strong> {{ $errors->has('body') }}</strong>
+                                    <strong> {{ $errors->first('body') }}</strong>
                                 </div>
                             @endif
 
