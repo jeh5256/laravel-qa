@@ -33,3 +33,43 @@
         margin-top: 10px;
     }
 }
+
+.vote-controls {
+    margin-right: 30px;
+    min-width: 60px;
+    text-align: center;
+
+    span, a {
+        display: block;
+    }
+
+    span {
+        &.votes-count {
+            font-size: 25px;
+        }
+        &.favorite-count {
+            font-size: 12px;
+        }
+    }
+    a {       
+        cursor: pointer;
+
+        &.favorite {
+            &.favorited, &.favorited:hover {
+                color: $warning;
+            }
+        }
+    }
+
+    &.up-vote i {
+        color: $orange;
+    }
+
+    .down-vote i {
+        color: $blue;
+    }
+
+    .vote-accepted i {
+        color: $green;
+    }
+}
