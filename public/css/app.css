@@ -15222,7 +15222,7 @@ readers do not read off random characters that represent icons */
   color: #3490dc;
 }
 
-.vote-controls .vote-accepted a {
+.vote-controls .vote-accepted i {
   color: #38c172;
 }
 
