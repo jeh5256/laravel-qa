@@ -15214,7 +15214,7 @@ readers do not read off random characters that represent icons */
   color: #ffed4a;
 }
 
-.vote-controls.up-vote i {
+.vote-controls .up-vote i {
   color: #f6993f;
 }
 
@@ -15222,7 +15222,7 @@ readers do not read off random characters that represent icons */
   color: #3490dc;
 }
 
-.vote-controls .vote-accepted i {
+.vote-controls .vote-accepted a {
   color: #38c172;
 }
 

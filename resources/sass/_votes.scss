@@ -61,7 +61,7 @@
         }
     }
 
-    &.up-vote i {
+    .up-vote i {
         color: $orange;
     }
 
@@ -69,7 +69,7 @@
         color: $blue;
     }
 
-    .vote-accepted i {
+    .vote-accepted a {
         color: $green;
     }
 }

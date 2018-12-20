@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class AnswersController extends Controller
 {
+
+    public function __construct() 
+    {
+        $this->middleware('auth')->except('index');       
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -16,6 +22,7 @@ class AnswersController extends Controller
      */
     public function store(Question $question, Request $request)
     {
+        $this->authorize('store', $answer);
         $request->validate([
             'body' => 'required'
         ]);
@@ -67,8 +74,11 @@ class AnswersController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Answer $answer)
+    public function destroy(Question $question, Answer $answer)
     {
-        //
+        $this->authorize('delete', $answer);
+        $answer->delete();
+
+        return back()->with('success', 'Your answer was deleted');
     }
 }
