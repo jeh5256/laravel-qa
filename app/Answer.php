@@ -44,8 +44,17 @@ class Answer extends Model
         return $this->created_at->diffForHumans();
     }
 
+    public function isBestAnswer()
+    {
+        return $this->id == $this->question->best_answer_id;
+    }
+
+    public function getIsBestAnswerAttribute() {
+        return $this->isBestAnswer();
+    }
+
     public function getStatusAttribute()
     {
-        return $this->id == $this->question->best_answer_id ? 'vote-accepted' : '';
+        return $this->isBestAnswer() ? 'vote-accepted' : '';
     }
 }

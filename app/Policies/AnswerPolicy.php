@@ -11,17 +11,6 @@ class AnswerPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can create answers.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function create(User $user)
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can update the answer.
      *
      * @param  \App\User  $user
@@ -31,6 +20,18 @@ class AnswerPolicy
     public function update(User $user, Answer $answer)
     {
         return $user->id == $answer->user_id;
+    }
+
+    /**
+     * Determine whether the user can accept the answer as best answer.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Answer  $answer
+     * @return mixed
+     */
+    public function accept(User $user, Answer $answer)
+    {
+        return $user->id == $answer->question->user_id;
     }
 
     /**

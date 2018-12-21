@@ -69,7 +69,7 @@ class QuestionsController extends Controller
     public function edit(Question $question)
     {
         $this->authorize('update', $question);
-        abort(403, "Access denied. You can't edit a question from another user");
+        //abort(403, "Access denied. You can't edit a question from another user");
     
         return view('questions.edit', compact('question'));
     }
