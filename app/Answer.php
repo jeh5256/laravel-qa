@@ -57,4 +57,9 @@ class Answer extends Model
     {
         return $this->isBestAnswer() ? 'vote-accepted' : '';
     }
+
+    public function votes()
+    {
+        return $this->morphedToMany(User::class, 'vote');
+    }
 }

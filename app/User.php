@@ -49,4 +49,33 @@ class User extends Authenticatable
         $size = 32;
         return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s=" . $size;
     }
+
+    public function voteQuestions()
+    {
+        return $this->morphedByMany(Question::class, 'vote');
+    }
+
+    public function voteAnswers()
+    {
+        return $this->morphedByMany(Answer::class, 'vote');
+    }
+
+    public function voteForQuestion(Question $question, $vote)
+    {
+        $voteQuestions = $this->voteQuestions();
+        $voteExists = $voteQuestions->where('vote_id', $question->id)->exists();
+
+        if ($voteExists) {
+            $voteQuestions->updateExistingPivot($question, ['vote' => $vote]);
+        } else {
+            $voteQuestions->attach($question, ['vote' => $vote]);
+        }
+
+        $question->load('votes');
+        $downVotes = (int) $question->downVotes()->sum('vote');
+        $upVotes = (int) $question->upVotes()->sum('vote');
+
+        $question->votes_count = $upVotes + $downVotes;
+        $question->save();
+    }
 }
