@@ -12,13 +12,29 @@
                 @foreach ($answers as $answer)
                     <div class="media">
                         <div class="d-flex flex-column vote-controls">
-                            <a title="This answer is useful" class="up-vote">
+                            <a 
+                                title="This answer is useful" 
+                                class="up-vote {{ Auth::guest() ? 'off' : '' }}"
+                                onClick="event.preventDefault(); document.getElementById('up-vote-answer-{{ $answer->id }}').submit();"
+                            >
                                 <i class="fas fa-caret-up fa-3x"></i>
                             </a>
-                            <span class="votes-count">3</span>
-                            <a title="This answer is not useful" class="down-vote off">
+                            <form id="up-vote-answer-{{ $answer->id }}" action="/answers/{{ $answer->id }}/vote" method="POST">
+                                @csrf
+                                <input type="hidden" name="vote" value="1" />
+                            </form>
+                            <span class="votes-count">{{ $answer->vote_count }}</span>
+                            <a 
+                                title="This answer is not useful" 
+                                class="down-vote {{ Auth::guest() ? 'off' : '' }}"
+                                onClick="event.preventDefault(); document.getElementById('down-vote-answer-{{ $answer->id }}').submit();"
+                            >
                                 <i class="fas fa-caret-down fa-3x"></i>
                             </a>
+                            <form id="down-vote-answer-{{ $answer->id }}" action="/answers/{{ $answer->id }}/vote" method="POST">
+                                @csrf
+                                <input type="hidden" name="vote" value="-1" />
+                            </form>
 
                             @can('accept', $answer)
                                 <a title="Click to mark as best answer" 
@@ -52,11 +68,11 @@
                                     <div class="ml-auto">
 
                                         @can ('update', $answer)
-                                            <a href="{{ route('questions.answers.edit', [$question->id, $answer->id]) }}" class="btn btn-sm btn-outline-info">Edit</a>
+                                            <a href="{{ route('questions.answers.edit', [$answer->id, $answer->id]) }}" class="btn btn-sm btn-outline-info">Edit</a>
                                         @endcan
 
                                         @can ('delete', $answer)
-                                            <form method="POST" action="{{ route('questions.answers.destroy', [$question->id, $answer->id]) }}" class="form-delete">
+                                            <form method="POST" action="{{ route('questions.answers.destroy', [$answer->id, $answer->id]) }}" class="form-delete">
                                                 @method('delete')
                                                 @csrf()
                                                 <button type="submit" class="btn btn-sm btn-outline-danger" onClick="return confirm('Are you sure?')">

@@ -25,3 +25,4 @@ Route::get('/questions/{slug}', 'QuestionsController@show')->name('questions.sho
 Route::resource('questions.answers', 'AnswersController')->except(['index', 'create', 'show']);
 Route::post('/answers/{answer}/accept', 'AcceptAnswerController')->name('answers.accept');
 Route::post('/questions/{question}/vote', 'VoteQuestionController');
+Route::post('/answers/{answer}/vote', 'VoteAnswerController');
