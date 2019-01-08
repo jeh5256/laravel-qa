@@ -50,6 +50,11 @@ class User extends Authenticatable
         return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s=" . $size;
     }
 
+    public function questionFavorites()
+    {
+        return $this->belongsToMany(Question::class, 'question_favorites')->withTimestamps();
+    }
+
     public function voteQuestions()
     {
         return $this->morphedByMany(Question::class, 'vote');

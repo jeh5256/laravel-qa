@@ -42,10 +42,27 @@
                                 @csrf
                                 <input type="hidden" name="vote" value="-1" />
                             </form>
-                            <a title="Click to mark as favorite (Click to unfavorite)" class="favorite favorited mt-4">
+                            <a 
+                                title="Click to mark as favorite (Click to unfavorite)" 
+                                class="favorite {{ Auth::guest() ? 'off' : ($question->is_favorited ? 'favorited' : '') }} mt-4"
+                                onclick="event.preventDefault(); document.getElementById('favorite-question-{{ $question->id }}').submit();"
+                            >
                                 <i class="fas fa-star fa-2x"></i>
+                                <span class="favorite-count">{{ $question->favorites_count }}</span>
                             </a>
-                            <span class="favorite-count">1</span>
+                            <form 
+                                id="favorite-question-{{ $question->id }}" 
+                                action="/questions/{{ $question->id }}/favorites"
+                                method="POST"
+                                style="display:none;"
+                            >
+                                @csrf
+
+                                @if ($question->is_favorited)
+                                    @method('DELETE');
+                                @endif
+
+                            </form>
                         </div>
                         <div class="media-body">
                             {!! $question->body_html !!}
