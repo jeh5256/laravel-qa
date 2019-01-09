@@ -5,7 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
-{
+{   
+    use VoteTrait;
+
     protected $fillable = ['body', 'user_id'];
 
     public static function boot() {
@@ -56,20 +58,5 @@ class Answer extends Model
     public function getStatusAttribute()
     {
         return $this->isBestAnswer() ? 'vote-accepted' : '';
-    }
-
-    public function votes()
-    {
-        return $this->morphToMany(User::class, 'vote');
-    }
-
-    public function upVotes()
-    {
-        return $this->votes()->wherePivot('vote', 1);
-    }
-
-    public function downVotes()
-    {
-        return $this->votes()->wherePivot('vote', -1);
     }
 }
