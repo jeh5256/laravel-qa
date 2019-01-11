@@ -19,7 +19,7 @@
                     
                     @include('layouts._messages')
 
-                    @foreach($questions as $question)
+                    @forelse($questions as $question)
                         <div class="media">
                             <div class="d-flex flex-column counters">
                                 <div class="vote">
@@ -36,7 +36,7 @@
                             </div>
                             <div class="media-body">
                                 <div class="d-flex align-items-center">
-                                    <h3 class="mt-0"><a href="{{ $question->url }}">{{ $question->title }}</a></h3>
+                                    <h3 class="mt-0"><a href="{{ $question->url }}">{!! $question->title !!}</a></h3>
                                     <div class="ml-auto">
 
                                         @can ('update', $question)
@@ -66,7 +66,11 @@
                             </div>
                         </div>
                         <hr />
-                    @endforeach
+                    @empty
+                        <div class="alert alert-warning">
+                            <strong>Sorry, there are no questions</strong>
+                        </div>
+                    @endforelse
                     
                     <div class="justify-content-center">
                         {{ $questions->links() }}
