@@ -15151,6 +15151,14 @@ readers do not read off random characters that represent icons */
   width: auto;
 }
 
+.post {
+  padding: 20px 0;
+}
+
+.post:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
 .counters {
   font-size: 11px;
   margin-right: 30px;
