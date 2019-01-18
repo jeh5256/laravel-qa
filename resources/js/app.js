@@ -17,6 +17,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('author-info', require('./components/AuthorInfo.vue').default);
+Vue.component('answer', require('./components/Answer.vue').default);
 
 const app = new Vue({
     el: '#app'
