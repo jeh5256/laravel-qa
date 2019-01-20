@@ -1778,6 +1778,9 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     isInvalid: function isInvalid() {
       return this.body.length < 10;
+    },
+    endpoint: function endpoint() {
+      return "/questions/".concat(this.questionId, "/answers/").concat(this.id);
     }
   },
   methods: {
@@ -1789,18 +1792,31 @@ __webpack_require__.r(__webpack_exports__);
       this.beforeEditCache = this.body;
       this.editing = true;
     },
-    update: function update() {
+    destroy: function destroy() {
       var _this = this;
 
+      if (confirm('Are you sure?')) {
+        axios.delete(this.endpoint).then(function (res) {
+          $(_this.$el).fadeOut(500, function () {
+            alert(res.data.message);
+          });
+        }).catch(function (err) {
+          alert(err.response.data.messagee);
+        });
+      }
+    },
+    update: function update() {
+      var _this2 = this;
+
       console.log();
-      axios.patch("/questions/".concat(this.questionId, "/answers/").concat(this.id), {
+      axios.patch(this.endpoint, {
         body: this.body
       }).then(function (res) {
-        _this.editing = false;
-        _this.bodyHtml = res.data.body_html;
+        _this2.editing = false;
+        _this2.bodyHtml = res.data.body_html;
         alert(res.data.message);
       }).catch(function (err) {
-        console.log('err', err);
+        alert(err.response.data.message);
       });
     }
   }
