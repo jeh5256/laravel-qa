@@ -1771,10 +1771,24 @@ __webpack_require__.r(__webpack_exports__);
       body: this.answer.body,
       bodyHtml: this.answer.body_html,
       id: this.answer.id,
-      questionId: this.answer.question_id
+      questionId: this.answer.question_id,
+      beforeEditCache: null
     };
   },
+  computed: {
+    isInvalid: function isInvalid() {
+      return this.body.length < 10;
+    }
+  },
   methods: {
+    cancel: function cancel() {
+      this.body = this.beforeEditCache;
+      this.editing = false;
+    },
+    edit: function edit() {
+      this.beforeEditCache = this.body;
+      this.editing = true;
+    },
     update: function update() {
       var _this = this;
 

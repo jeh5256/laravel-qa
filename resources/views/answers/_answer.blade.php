@@ -9,10 +9,10 @@
             <form v-if="editing" @submit.prevent="update">
                 <div class="form-group">
 
-                    <textarea class="form-control" rows="10" v-model="body"></textarea>
+                    <textarea class="form-control" rows="10" v-model="body" required></textarea>
                 </div>
-                <button @click="editing=false">Update</button>
-                <button @click="editing=false">Cancel</button>
+                <button class="btn btn-primary" :disabled="isInvalid">Update</button>
+                <button @click="cancel" type="button" class="btn btn-outline-secondary">Cancel</button>
             </form>
             <div v-else>
                 <div v-html="bodyHtml"></div>
@@ -21,7 +21,7 @@
                         <div class="ml-auto">
         
                             @can ('update', $answer)
-                                <a  @click.prevent="editing=true" class="btn btn-sm btn-outline-info">Edit</a>
+                                <a  @click.prevent="edit" class="btn btn-sm btn-outline-info">Edit</a>
                             @endcan
         
                             @can ('delete', $answer)
