@@ -9,12 +9,15 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import VueIzioast from 'vue-izitoast';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+Vue.use(VueIzioast);
 
 Vue.component('author-info', require('./components/AuthorInfo.vue').default);
 Vue.component('answer', require('./components/Answer.vue').default);
