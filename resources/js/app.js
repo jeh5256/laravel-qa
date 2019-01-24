@@ -22,6 +22,7 @@ Vue.use(VueIzioast);
 Vue.component('author-info', require('./components/AuthorInfo.vue').default);
 Vue.component('answer', require('./components/Answer.vue').default);
 Vue.component('favorite', require('./components/Favorite.vue').default);
+Vue.component('accept', require('./components/Accept.vue').default);
 
 const app = new Vue({
     el: '#app'

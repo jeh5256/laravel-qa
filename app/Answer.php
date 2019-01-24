@@ -10,10 +10,7 @@ class Answer extends Model
 
     protected $fillable = ['body', 'user_id'];
 
-    protected $appends = [
-        'created_date',
-        'body_html'
-    ];
+    protected $appends = ['created_date', 'body_html', 'is_best_answer'];
 
     public static function boot() {
         parent::boot();
