@@ -1910,18 +1910,58 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['question'],
   data: function data() {
     return {
       count: this.question.favorites_count,
       isFavorited: this.question.is_favorited,
-      signedIn: true
+      id: this.question.id
     };
   },
   computed: {
     classes: function classes() {
       return ['favorite', 'mt-4', !this.signedIn ? 'off' : this.isFavorited ? 'favorited' : ''];
+    },
+    endpoint: function endpoint() {
+      return "/questions/".concat(this.id, "/favorites");
+    },
+    signedIn: function signedIn() {
+      return window.userAuth.signedIn;
+    }
+  },
+  methods: {
+    toggle: function toggle() {
+      if (!this.signedIn) {
+        this.$toast.warning('Please login to favorite a question', 'Warning', {
+          timeout: 5000,
+          position: 'bottomLeft'
+        });
+        return;
+      }
+
+      this.isFavorited ? this.destroy() : this.create();
+    },
+    destroy: function destroy() {
+      var _this = this;
+
+      axios.delete(this.endpoint).then(function (res) {
+        _this.count--;
+        _this.isFavorited = false;
+      }).catch(function (err) {
+        return console.log(err);
+      });
+    },
+    create: function create() {
+      var _this2 = this;
+
+      axios.post(this.endpoint).then(function (res) {
+        _this2.count++;
+        _this2.isFavorited = true;
+      }).catch(function (err) {
+        return console.log(err);
+      });
     }
   }
 });
@@ -38009,8 +38049,14 @@ var render = function() {
   return _c(
     "a",
     {
-      staticClass: "classes",
-      attrs: { title: "Click to mark as favorite (Click to unfavorite)" }
+      class: _vm.classes,
+      attrs: { title: "Click to mark as favorite (Click to unfavorite)" },
+      on: {
+        click: function($event) {
+          $event.preventDefault()
+          return _vm.toggle($event)
+        }
+      }
     },
     [
       _c("i", { staticClass: "fas fa-star fa-2x" }),
