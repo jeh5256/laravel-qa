@@ -25,8 +25,7 @@ Vue.use(authorize);
 //Comonents
 Vue.component('author-info', require('./components/AuthorInfo.vue').default);
 Vue.component('answer', require('./components/Answer.vue').default);
-Vue.component('favorite', require('./components/Favorite.vue').default);
-Vue.component('accept', require('./components/Accept.vue').default);
+Vue.component('vote', require('./components/Vote.vue').default);
 
 const app = new Vue({
     el: '#app'
