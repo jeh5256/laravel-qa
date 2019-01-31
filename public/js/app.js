@@ -1859,7 +1859,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['answer'],
   data: function data() {
@@ -1957,6 +1956,22 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Answer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Answer */ "./resources/js/components/Answer.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1977,13 +1992,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['answers', 'count'],
+  props: ['question'],
+  created: function created() {
+    this.fetch("/questions/".concat(this.questionId, "/answers"));
+  },
   components: {
     Answer: _Answer__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   computed: {
     title: function title() {
       return this.count + ' ' + (this.count > 1) ? 'Answers' : 'Answer';
+    }
+  },
+  data: function data() {
+    return {
+      questionId: this.question.id,
+      count: this.question.answers_count,
+      answers: [],
+      nextURL: null
+    };
+  },
+  methods: {
+    fetch: function fetch(endpoint) {
+      var _this = this;
+
+      axios.get(endpoint).then(function (_ref) {
+        var _this$answers;
+
+        var data = _ref.data;
+        console.log(data);
+
+        (_this$answers = _this.answers).push.apply(_this$answers, _toConsumableArray(data.data));
+
+        _this.nextURL = data.next_page_url;
+      }).catch(function (err) {
+        return console.log(err);
+      });
     }
   }
 });
@@ -2204,9 +2248,6 @@ __webpack_require__.r(__webpack_exports__);
       };
       return titles[voteType];
     }
-  },
-  mounted: function mounted() {
-    console.log(this.model.vote_count);
   }
 });
 
@@ -38521,7 +38562,29 @@ var render = function() {
                     key: answer.id,
                     attrs: { answer: answer }
                   })
-                })
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "text-center mt-3" }, [
+                  _vm.nextURL
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-secondary",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.fetch(_vm.nextURL)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Load More\n                    "
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ])
               ],
               2
             )

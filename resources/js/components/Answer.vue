@@ -25,8 +25,7 @@
                     </div>
                     <div class="col-4"></div>
                     <div class="col-4">
-                        <author-info :model="answer" label="Answered"
-                        ></author-info>
+                        <author-info :model="answer" label="Answered"></author-info>
                     </div>
                 </div>
             </div>

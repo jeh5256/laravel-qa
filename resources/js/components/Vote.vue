@@ -56,6 +56,7 @@ export default {
 
                 return;
             }
+
             axios.post(this.endpoint, { vote })
             .then((res) => {
 
@@ -90,8 +91,5 @@ export default {
             return titles[voteType];
         }
     },
-    mounted() {
-        console.log(this.model.vote_count);
-    }
 }
 </script>
