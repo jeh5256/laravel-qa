@@ -1,38 +1,42 @@
 <template>
-    <div class="row mt-4" v-cloak v-if="count">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h2>{{ title }}</h2>
-                    </div>
-                    <hr />
+    <div>
+        <div class="row mt-4" v-cloak v-if="count">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h2>{{ title }}</h2>
+                        </div>
+                        <hr />
 
-                    <answer 
-                        @deleted="remove(index)" 
-                        v-for="(answer, index) in answers" 
-                        :answer="answer" 
-                        :key="answer.id"
-                    >
-                    </answer>
-
-                    
-                    <div class="text-center mt-3" v-if="nextURL">
-                        <button 
-                            class="btn btn-outline-secondary" 
-                            @click.prevent="fetch(nextURL)"
+                        <answer 
+                            @deleted="remove(index)" 
+                            v-for="(answer, index) in answers" 
+                            :answer="answer" 
+                            :key="answer.id"
                         >
-                            Load More
-                        </button>
+                        </answer>
+
+                        
+                        <div class="text-center mt-3" v-if="nextURL">
+                            <button 
+                                class="btn btn-outline-secondary" 
+                                @click.prevent="fetch(nextURL)"
+                            >
+                                Load More
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <add-answer @created="add" :question-id="question.id"></add-answer>
     </div>
 </template>
 
 <script>
 import Answer from './Answer';
+import AddAnswer from './AddAnswer';
 
 export default {
     props: ['question'],
@@ -40,7 +44,8 @@ export default {
         this.fetch(`/questions/${this.questionId}/answers`);
     },
     components: {
-        Answer
+        Answer,
+        AddAnswer
     },
     computed: {
         title() {
@@ -56,6 +61,10 @@ export default {
         }
     },
     methods: {
+        add(answer) {
+            this.answers.push(answer);
+            this.count++;
+        },
         fetch(endpoint) {
             axios.get(endpoint)
             .then(({data}) => {

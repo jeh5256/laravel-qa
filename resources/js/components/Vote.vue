@@ -41,7 +41,7 @@ export default {
     },
     data() {
         return {
-            count: this.model.vote_count,
+            count: this.model.vote_count || 0,
             id: this.model.id
         }
     },
