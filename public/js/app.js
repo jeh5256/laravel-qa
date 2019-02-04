@@ -1902,11 +1902,7 @@ __webpack_require__.r(__webpack_exports__);
         position: 'center',
         buttons: [['<button><b>YES</b></button>', function (instance, toast) {
           axios.delete(_this.endpoint).then(function (res) {
-            $(_this.$el).fadeOut(500, function () {
-              _this.$toast.success(res.data.message, "Success", {
-                timeout: 3000
-              });
-            });
+            _this.$emit('deleted');
           }).catch(function (err) {
             _this.$toast.error(err.response.data.message, "Error", {
               timeout: 3000
@@ -1990,6 +1986,13 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['question'],
@@ -2001,7 +2004,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   },
   computed: {
     title: function title() {
-      return this.count + ' ' + (this.count > 1) ? 'Answers' : 'Answer';
+      return this.count + ' ' + (this.count > 1 ? 'Answers' : 'Answer');
     }
   },
   data: function data() {
@@ -2020,7 +2023,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         var _this$answers;
 
         var data = _ref.data;
-        console.log(data);
 
         (_this$answers = _this.answers).push.apply(_this$answers, _toConsumableArray(data.data));
 
@@ -2028,6 +2030,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }).catch(function (err) {
         return console.log(err);
       });
+    },
+    remove: function remove(index) {
+      this.answers.splice(index, 1);
+      this.count--;
     }
   }
 });
@@ -38557,16 +38563,21 @@ var render = function() {
                 _vm._v(" "),
                 _c("hr"),
                 _vm._v(" "),
-                _vm._l(_vm.answers, function(answer) {
+                _vm._l(_vm.answers, function(answer, index) {
                   return _c("answer", {
                     key: answer.id,
-                    attrs: { answer: answer }
+                    attrs: { answer: answer },
+                    on: {
+                      deleted: function($event) {
+                        _vm.remove(index)
+                      }
+                    }
                   })
                 }),
                 _vm._v(" "),
-                _c("div", { staticClass: "text-center mt-3" }, [
-                  _vm.nextURL
-                    ? _c(
+                _vm.nextURL
+                  ? _c("div", { staticClass: "text-center mt-3" }, [
+                      _c(
                         "button",
                         {
                           staticClass: "btn btn-outline-secondary",
@@ -38583,8 +38594,8 @@ var render = function() {
                           )
                         ]
                       )
-                    : _vm._e()
-                ])
+                    ])
+                  : _vm._e()
               ],
               2
             )
@@ -50077,7 +50088,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (typeof policy === 'string' && _typeof(model) === 'object') {
         var user = window.userAuth.user;
-        console.log(_policies__WEBPACK_IMPORTED_MODULE_0__["default"][policy](user, model));
         return _policies__WEBPACK_IMPORTED_MODULE_0__["default"][policy](user, model);
       }
     };
