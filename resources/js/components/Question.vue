@@ -64,6 +64,7 @@
 </template>
 <script>
     import AuthorInfo from '../components/AuthorInfo';
+    import mixins from '../mixins/mixins.js';
     import Vote from '../components/Vote';
 
     export default {
@@ -84,74 +85,41 @@
                 title: this.question.title,
                 body: this.question.body,
                 bodyHtml: this.question.body_html,
-                editing: false,
                 id: this.question.id,
                 beforeEditCache: {}
             }
         },
         methods: {
-            cancel() {
+            delete() {
+                axios.delete(this.endpoint)
+                .then(({data}) => {
+                    this.$toast.success(data.message, { timeout: 2000 });
+                })
+                .catch((err) => {
+                    this.$toast.error(err.response.data.message, "Error", { timeout: 5000 });
+                });
+
+                setTimeout(() => {
+                    window.location.href="/questions";
+                }, 1000);
+            },
+            payload() {
+                return {
+                    title: this.title,
+                    body: this.body
+                };
+            },
+            restoreFromCache() {
                 this.title = this.beforeEditCache.title;
                 this.body = this.beforeEditCache.body;
-                this.editing = false;
             },
-            edit() {
+            setEditCache() {
                 this.beforeEditCache = {
                     title: this.question.title,
                     body: this.question.body
                 };
-                this.editing = true;
             },
-            destroy() {
-                this.$toast.question('Are you sure about that?', "Confirm", {
-                    timeout: 20000,
-                    close: false,
-                    overlay: true,
-                    displayMode: 'once',
-                    id: 'question',
-                    zindex: 999,
-                    title: 'Hey',
-                    position: 'center',
-                    buttons: [
-                        ['<button><b>YES</b></button>', (instance, toast) => {
-
-                            axios.delete(this.endpoint)
-                            .then(({data}) => {
-                                this.$toast.success(data.message, { timeout: 2000 });
-                            })
-                            .catch((err) => {
-                                this.$toast.error(err.response.data.message, "Error", { timeout: 5000 });
-                            });
-
-                            setTimeout(() => {
-                                window.location.href="/questions";
-                            }, 1000);
-                        
-                            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-                
-                        }, true],
-                        ['<button>NO</button>', function (instance, toast) {
-                
-                            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-                
-                        }],
-                    ],
-                });
-            },
-            update() {
-                axios.put(this.endpoint, {
-                    title: this.title,
-                    body: this.body
-                })
-                .then(({data}) => {
-                    this.bodyHtml = data.body_html;
-                    this.editing = false;
-                    this.$toast.success(data.message, "Success", { timeout: 5000 });
-                })
-                .catch(({response}) => {
-                    this.$toast.error(response.data.message, 'Error', { timeout: 5000 });
-                });
-            },
-        }
+        },
+        mixins: [mixins]
     }
 </script>
