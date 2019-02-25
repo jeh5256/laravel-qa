@@ -12,7 +12,9 @@
                     <div class="media">
                         <div class="media-body">
                             <div class="form-group">
-                                <textarea rows="10" v-model="body" class="form-control" required></textarea>
+                                <editor :body="body">
+                                    <textarea rows="10" v-model="body" class="form-control" required></textarea>
+                                </editor>
                             </div>
                             <button class="btn btn-primary" :disabled="isInvalid">Update</button>
                             <button class="btn btn-outline-secondary" @click="cancel" type="button">Cancel</button>
@@ -48,11 +50,7 @@
                                 </div>
                                 <div class="col-4"></div>
                                 <div class="col-4">
-        
-                                    <author-info 
-                                        :model="question" 
-                                        label="Asked"
-                                    ></author-info>
+                                    <author-info :model="question" label="Asked"></author-info>
                                 </div>
                             </div>
                         </div>
@@ -64,13 +62,14 @@
 </template>
 <script>
     import AuthorInfo from '../components/AuthorInfo';
-    import mixins from '../mixins/mixins.js';
+    import Editor from '../components/Editor.vue'
+    import Mixins from '../mixins/mixins.js';
     import Vote from '../components/Vote';
 
     export default {
         props: ['question'],
         components: {
-            AuthorInfo, Vote
+            AuthorInfo, Editor, Vote
         },
         computed: {
             isInvalid() {
@@ -120,6 +119,6 @@
                 };
             },
         },
-        mixins: [mixins]
+        mixins: [Mixins]
     }
 </script>

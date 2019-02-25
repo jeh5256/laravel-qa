@@ -8,7 +8,7 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-//Font Awesom
+//Font Awesome
 @import '~@fortawesome/fontawesome-free/scss/brands';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 @import '~@fortawesome/fontawesome-free/scss/solid';
@@ -21,6 +21,7 @@
 @import '_answers';
 @import 'votes';
 @import 'form';
+@import 'nav-tabs';
 
 .navbar-laravel {
   background-color: #fff;
