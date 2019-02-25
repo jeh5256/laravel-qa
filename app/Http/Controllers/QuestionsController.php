@@ -44,8 +44,8 @@ class QuestionsController extends Controller
      */
     public function store(AskQuestionRequest $request)
     {
-        $request->user()->questions()->create(clean($request->only('title', 'body')));
-        return redirect()->route('questions.index')->with('success', 'Your question has been submitted');
+        $request->user()->questions()->create($request->only('title', 'body'));
+        return redirect()->route('questions.index')->with('success', "Your question has been submitted");
     }
 
     /**
@@ -84,8 +84,14 @@ class QuestionsController extends Controller
     public function update(AskQuestionRequest $request, Question $question)
     {
         $this->authorize('update', $question);
-        abort(403, "Access denied. You can't edit a question from another user");
         $question->update($request->only('body', 'title'));
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Your question has been updated',
+                'body_html' => $question->body_html
+            ]);
+        }
 
         return redirect('/questions')->with('success', 'Your question has been updated');
     }
@@ -102,6 +108,11 @@ class QuestionsController extends Controller
         //abort(403, "Access denied. You can't delete a question from another user");
         $question->delete();
 
+        if (request()->expectsJson()) {
+            return response()->json([
+                'message' => 'Your question has been deleted'
+            ]);
+        }
         return redirect('/questions')->with('success', 'Your question has been deleted');
     }
 }

@@ -23,10 +23,7 @@ Vue.use(VueIzioast);
 Vue.use(authorize);
 
 //Comonents
-Vue.component('author-info', require('./components/AuthorInfo.vue').default);
-Vue.component('answer', require('./components/Answer.vue').default);
-Vue.component('answers', require('./components/Answers.vue').default);
-Vue.component('vote', require('./components/Vote.vue').default);
+Vue.component('question-page', require('./pages/QuestionPage.vue').default);
 
 const app = new Vue({
     el: '#app'

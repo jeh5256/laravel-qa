@@ -34,6 +34,9 @@
 </template>
 
 <script>
+    import AuthorInfo from '../components/AuthorInfo';
+    import Vote from '../components/Vote';
+
     export default {
         props: ['answer'],
         data() {
@@ -53,6 +56,9 @@
             endpoint() {
                 return `/questions/${this.questionId}/answers/${this.id}`;
             }
+        },
+        components: {
+            AuthorInfo, Vote
         },
         methods: {
             cancel() {
