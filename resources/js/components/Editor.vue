@@ -14,12 +14,27 @@
             <div class="tab-pane active" id="text">
                 <slot></slot>
             </div>
-            <div class="tab-pane" id="preview">Preview...</div>
+            <div class="tab-pane" v-html="preview" id="preview"></div>
         </div>
     </div>
 </template>
 <script>
+    import autosize from 'autosize';
+    import MarkdownIt from 'markdown-it';
+    import prism from 'markdown-it-prism';
+
+    const md = new MarkdownIt();
+    md.use(prism);
+
     export default {
-       props: ['body'] 
+       props: ['body'],
+       computed: {
+           preview() {
+               return md.render(this.body);
+           }
+       },
+       mounted() {
+          autosize(this.$el.querySelector('textarea'));
+       }
     }
 </script>
