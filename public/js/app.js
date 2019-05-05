@@ -2589,9 +2589,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_AuthorInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/AuthorInfo */ "./resources/js/components/AuthorInfo.vue");
 /* harmony import */ var _components_Editor_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Editor.vue */ "./resources/js/components/Editor.vue");
 /* harmony import */ var _mixins_mixins_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/mixins.js */ "./resources/js/mixins/mixins.js");
-/* harmony import */ var prismjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prismjs */ "./node_modules/prismjs/prism.js");
-/* harmony import */ var prismjs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prismjs__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _components_Vote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Vote */ "./resources/js/components/Vote.vue");
+/* harmony import */ var _components_Vote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Vote */ "./resources/js/components/Vote.vue");
 //
 //
 //
@@ -2652,7 +2650,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 
 
 
@@ -2662,7 +2659,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     AuthorInfo: _components_AuthorInfo__WEBPACK_IMPORTED_MODULE_0__["default"],
     Editor: _components_Editor_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Vote: _components_Vote__WEBPACK_IMPORTED_MODULE_4__["default"]
+    Vote: _components_Vote__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   computed: {
     isInvalid: function isInvalid() {
@@ -2712,7 +2709,7 @@ __webpack_require__.r(__webpack_exports__);
       var el = this.$refs.bodyHtml;
 
       if (el) {
-        prismjs__WEBPACK_IMPORTED_MODULE_3___default.a.highlightAllUnder(el);
+        Prism.highlightAllUnder(el);
       }
     },
     setEditCache: function setEditCache() {
@@ -79269,6 +79266,32 @@ var eventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 
 /***/ }),
 
+/***/ "./resources/js/mixins/highlight.js":
+/*!******************************************!*\
+  !*** ./resources/js/mixins/highlight.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var prismjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! prismjs */ "./node_modules/prismjs/prism.js");
+/* harmony import */ var prismjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(prismjs__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    highlight: function highlight() {
+      var el = this.$refs.bodyHtml;
+
+      if (el) {
+        prismjs__WEBPACK_IMPORTED_MODULE_0___default.a.highlightAllUnder(el);
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/mixins/mixins.js":
 /*!***************************************!*\
   !*** ./resources/js/mixins/mixins.js ***!
@@ -79278,6 +79301,8 @@ var eventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _highlight__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./highlight */ "./resources/js/mixins/highlight.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -79333,6 +79358,8 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$toast.success(data.message, "Success", {
           timeout: 5000
         });
+      }).then(function () {
+        _this2.highlight();
       }).catch(function (_ref2) {
         var response = _ref2.response;
 
@@ -79341,7 +79368,8 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     }
-  }
+  },
+  mixins: [_highlight__WEBPACK_IMPORTED_MODULE_0__["default"]]
 });
 
 /***/ }),
@@ -79433,8 +79461,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Applications/AMPPS/www/laravel-qa.test/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Applications/AMPPS/www/laravel-qa.test/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/justinhughes/Documents/Udemy Courses/Laravel QA/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/justinhughes/Documents/Udemy Courses/Laravel QA/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

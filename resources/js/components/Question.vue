@@ -62,7 +62,6 @@
     import AuthorInfo from '../components/AuthorInfo';
     import Editor from '../components/Editor.vue'
     import Mixins from '../mixins/mixins.js';
-    import Prism from 'prismjs';
     import Vote from '../components/Vote';
 
     export default {
