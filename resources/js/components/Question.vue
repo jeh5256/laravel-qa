@@ -12,7 +12,7 @@
                     <div class="media">
                         <div class="media-body">
                             <div class="form-group">
-                                <editor :body="body">
+                                <editor :body="body" :name="uniqueName">
                                     <textarea rows="10" v-model="body" class="form-control" required></textarea>
                                 </editor>
                             </div>
@@ -59,22 +59,19 @@
     </div>
 </template>
 <script>
-    import AuthorInfo from '../components/AuthorInfo';
-    import Editor from '../components/Editor.vue'
     import Mixins from '../mixins/mixins.js';
-    import Vote from '../components/Vote';
 
     export default {
         props: ['question'],
-        components: {
-            AuthorInfo, Editor, Vote
-        },
         computed: {
             isInvalid() {
                 return this.body.length < 10 || this.title.length < 10;
             },
             endpoint() {
                 return `/questions/${this.id}`;
+            },
+            uniqueName() {
+                return `question-${this.id}`;
             }
         },
         data() {

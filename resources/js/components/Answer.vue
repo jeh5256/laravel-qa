@@ -4,16 +4,17 @@
         <vote :model="answer" name="answer"></vote>
     
         <div class="media-body">
-            <form v-if="editing" @submit.prevent="update">
+            <form v-show="authorize('modify', answer) && editing" @submit.prevent="update">
                 <div class="form-group">
-
-                    <textarea class="form-control" rows="10" v-model="body" required></textarea>
+                    <editor :body="body" :name="uniqueName">
+                        <textarea class="form-control" rows="10" v-model="body" required></textarea>
+                    </editor>
                 </div>
                 <button class="btn btn-primary" :disabled="isInvalid">Update</button>
                 <button @click="cancel" type="button" class="btn btn-outline-secondary">Cancel</button>
             </form>
-            <div v-else>
-                <div v-html="bodyHtml"></div>
+            <div v-show="!editing">
+                <div v-html="bodyHtml" ref="bodyHtml"></div>
                 <div class="row">
                     <div class="col-4">
                         <div class="ml-auto">
@@ -34,9 +35,7 @@
 </template>
 
 <script>
-    import AuthorInfo from '../components/AuthorInfo';
     import mixins from '../mixins/mixins.js';
-    import Vote from '../components/Vote';
 
     export default {
         props: ['answer'],
@@ -55,10 +54,10 @@
             },
             endpoint() {
                 return `/questions/${this.questionId}/answers/${this.id}`;
+            },
+            uniqueName() {
+                return `answer-${this.id}`;
             }
-        },
-        components: {
-            AuthorInfo, Vote
         },
         methods: {
             delete() {

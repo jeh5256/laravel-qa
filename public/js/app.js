@@ -2199,9 +2199,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_AuthorInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/AuthorInfo */ "./resources/js/components/AuthorInfo.vue");
-/* harmony import */ var _mixins_mixins_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/mixins.js */ "./resources/js/mixins/mixins.js");
-/* harmony import */ var _components_Vote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Vote */ "./resources/js/components/Vote.vue");
+/* harmony import */ var _mixins_mixins_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/mixins.js */ "./resources/js/mixins/mixins.js");
 //
 //
 //
@@ -2237,8 +2235,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['answer'],
@@ -2257,11 +2254,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     endpoint: function endpoint() {
       return "/questions/".concat(this.questionId, "/answers/").concat(this.id);
+    },
+    uniqueName: function uniqueName() {
+      return "answer-".concat(this.id);
     }
-  },
-  components: {
-    AuthorInfo: _components_AuthorInfo__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Vote: _components_Vote__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   methods: {
     delete: function _delete() {
@@ -2295,7 +2291,7 @@ __webpack_require__.r(__webpack_exports__);
       this.beforeEditCache = this.body;
     }
   },
-  mixins: [_mixins_mixins_js__WEBPACK_IMPORTED_MODULE_1__["default"]]
+  mixins: [_mixins_mixins_js__WEBPACK_IMPORTED_MODULE_0__["default"]]
 });
 
 /***/ }),
@@ -2490,10 +2486,16 @@ __webpack_require__.r(__webpack_exports__);
 var md = new markdown_it__WEBPACK_IMPORTED_MODULE_1___default.a();
 md.use(markdown_it_prism__WEBPACK_IMPORTED_MODULE_2___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['body'],
+  props: ['body', 'name'],
   computed: {
     preview: function preview() {
       return md.render(this.body);
+    }
+  },
+  methods: {
+    tabId: function tabId(tabName) {
+      var hash = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      return "".concat(hash).concat(tabName).concat(this.name);
     }
   },
   mounted: function mounted() {
@@ -2586,10 +2588,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_AuthorInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/AuthorInfo */ "./resources/js/components/AuthorInfo.vue");
-/* harmony import */ var _components_Editor_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Editor.vue */ "./resources/js/components/Editor.vue");
-/* harmony import */ var _mixins_mixins_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/mixins.js */ "./resources/js/mixins/mixins.js");
-/* harmony import */ var _components_Vote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Vote */ "./resources/js/components/Vote.vue");
+/* harmony import */ var _mixins_mixins_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/mixins.js */ "./resources/js/mixins/mixins.js");
 //
 //
 //
@@ -2650,23 +2649,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['question'],
-  components: {
-    AuthorInfo: _components_AuthorInfo__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Editor: _components_Editor_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Vote: _components_Vote__WEBPACK_IMPORTED_MODULE_3__["default"]
-  },
   computed: {
     isInvalid: function isInvalid() {
       return this.body.length < 10 || this.title.length < 10;
     },
     endpoint: function endpoint() {
       return "/questions/".concat(this.id);
+    },
+    uniqueName: function uniqueName() {
+      return "question-".concat(this.id);
     }
   },
   data: function data() {
@@ -2719,7 +2713,7 @@ __webpack_require__.r(__webpack_exports__);
       };
     }
   },
-  mixins: [_mixins_mixins_js__WEBPACK_IMPORTED_MODULE_2__["default"]]
+  mixins: [_mixins_mixins_js__WEBPACK_IMPORTED_MODULE_0__["default"]]
 });
 
 /***/ }),
@@ -66505,115 +66499,150 @@ var render = function() {
       _c("vote", { attrs: { model: _vm.answer, name: "answer" } }),
       _vm._v(" "),
       _c("div", { staticClass: "media-body" }, [
-        _vm.editing
-          ? _c(
-              "form",
+        _c(
+          "form",
+          {
+            directives: [
               {
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.update($event)
-                  }
-                }
-              },
+                name: "show",
+                rawName: "v-show",
+                value: _vm.authorize("modify", _vm.answer) && _vm.editing,
+                expression: "authorize('modify', answer) && editing"
+              }
+            ],
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.update($event)
+              }
+            }
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "form-group" },
               [
-                _c("div", { staticClass: "form-group" }, [
-                  _c("textarea", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.body,
-                        expression: "body"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { rows: "10", required: "" },
-                    domProps: { value: _vm.body },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.body = $event.target.value
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
                 _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    attrs: { disabled: _vm.isInvalid }
-                  },
-                  [_vm._v("Update")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-outline-secondary",
-                    attrs: { type: "button" },
-                    on: { click: _vm.cancel }
-                  },
-                  [_vm._v("Cancel")]
-                )
-              ]
-            )
-          : _c("div", [
-              _c("div", { domProps: { innerHTML: _vm._s(_vm.bodyHtml) } }),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-4" }, [
-                  _c("div", { staticClass: "ml-auto" }, [
-                    _vm.authorize("modify", _vm.answer)
-                      ? _c(
-                          "a",
-                          {
-                            staticClass: "btn btn-sm btn-outline-info",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.edit($event)
-                              }
-                            }
-                          },
-                          [_vm._v("Edit")]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.authorize("modify", _vm.answer)
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-sm btn-outline-danger",
-                            on: { click: _vm.destroy }
-                          },
-                          [
-                            _vm._v(
-                              "\n                            Delete\n                        "
-                            )
-                          ]
-                        )
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-4" }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-4" },
+                  "editor",
+                  { attrs: { body: _vm.body, name: _vm.uniqueName } },
                   [
-                    _c("author-info", {
-                      attrs: { model: _vm.answer, label: "Answered" }
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.body,
+                          expression: "body"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { rows: "10", required: "" },
+                      domProps: { value: _vm.body },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.body = $event.target.value
+                        }
+                      }
                     })
-                  ],
-                  1
+                  ]
                 )
-              ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { disabled: _vm.isInvalid }
+              },
+              [_vm._v("Update")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-secondary",
+                attrs: { type: "button" },
+                on: { click: _vm.cancel }
+              },
+              [_vm._v("Cancel")]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.editing,
+                expression: "!editing"
+              }
+            ]
+          },
+          [
+            _c("div", {
+              ref: "bodyHtml",
+              domProps: { innerHTML: _vm._s(_vm.bodyHtml) }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-4" }, [
+                _c("div", { staticClass: "ml-auto" }, [
+                  _vm.authorize("modify", _vm.answer)
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-sm btn-outline-info",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.edit($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Edit")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.authorize("modify", _vm.answer)
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-sm btn-outline-danger",
+                          on: { click: _vm.destroy }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            Delete\n                        "
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4" }),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-4" },
+                [
+                  _c("author-info", {
+                    attrs: { model: _vm.answer, label: "Answered" }
+                  })
+                ],
+                1
+              )
             ])
+          ]
+        )
       ])
     ],
     1
@@ -66770,37 +66799,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-body tab-content" }, [
-      _c(
-        "div",
-        { staticClass: "tab-pane active", attrs: { id: "text" } },
-        [_vm._t("default")],
-        2
-      ),
-      _vm._v(" "),
-      _c("div", {
-        staticClass: "tab-pane",
-        attrs: { id: "preview" },
-        domProps: { innerHTML: _vm._s(_vm.preview) }
-      })
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    _c("div", { staticClass: "card-header" }, [
       _c("ul", { staticClass: "nav nav-tabs card-header-tabs" }, [
         _c("li", { staticClass: "nav-item" }, [
           _c(
             "a",
             {
               staticClass: "nav-link active",
-              attrs: { "data-toggle": "tab", href: "#text" }
+              attrs: { "data-toggle": "tab", href: _vm.tabId("write", "#") }
             },
             [_vm._v("Text")]
           )
@@ -66811,15 +66817,31 @@ var staticRenderFns = [
             "a",
             {
               staticClass: "nav-link",
-              attrs: { "data-toggle": "tab", href: "#preview" }
+              attrs: { "data-toggle": "tab", href: _vm.tabId("preview", "#") }
             },
             [_vm._v("Preview")]
           )
         ])
       ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body tab-content" }, [
+      _c(
+        "div",
+        { staticClass: "tab-pane active", attrs: { id: _vm.tabId("write") } },
+        [_vm._t("default")],
+        2
+      ),
+      _vm._v(" "),
+      _c("div", {
+        staticClass: "tab-pane",
+        attrs: { id: _vm.tabId("preview") },
+        domProps: { innerHTML: _vm._s(_vm.preview) }
+      })
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -66937,29 +66959,33 @@ var render = function() {
                   "div",
                   { staticClass: "form-group" },
                   [
-                    _c("editor", { attrs: { body: _vm.body } }, [
-                      _c("textarea", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.body,
-                            expression: "body"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { rows: "10", required: "" },
-                        domProps: { value: _vm.body },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                    _c(
+                      "editor",
+                      { attrs: { body: _vm.body, name: _vm.uniqueName } },
+                      [
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.body,
+                              expression: "body"
                             }
-                            _vm.body = $event.target.value
+                          ],
+                          staticClass: "form-control",
+                          attrs: { rows: "10", required: "" },
+                          domProps: { value: _vm.body },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.body = $event.target.value
+                            }
                           }
-                        }
-                      })
-                    ])
+                        })
+                      ]
+                    )
                   ],
                   1
                 ),
@@ -79302,8 +79328,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _highlight__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./highlight */ "./resources/js/mixins/highlight.js");
+/* harmony import */ var _components_AuthorInfo_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/AuthorInfo.vue */ "./resources/js/components/AuthorInfo.vue");
+/* harmony import */ var _components_Editor_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Editor.vue */ "./resources/js/components/Editor.vue");
+/* harmony import */ var _components_Vote_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Vote.vue */ "./resources/js/components/Vote.vue");
+
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    AuthorInfo: _components_AuthorInfo_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Editor: _components_Editor_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Vote: _components_Vote_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
   data: function data() {
     return {
       editing: false

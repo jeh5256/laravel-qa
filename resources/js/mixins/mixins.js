@@ -1,6 +1,12 @@
 import highlight from './highlight';
+import AuthorInfo from '../components/AuthorInfo.vue';
+import Editor from '../components/Editor.vue';
+import Vote from '../components/Vote.vue';
 
 export default {
+    components: {
+        AuthorInfo, Editor, Vote
+    },
     data() {
         return {
             editing: false
