@@ -14,7 +14,7 @@
                 <button @click="cancel" type="button" class="btn btn-outline-secondary">Cancel</button>
             </form>
             <div v-show="!editing">
-                <div v-html="bodyHtml" ref="bodyHtml"></div>
+                <div :id="uniqueName" v-html="bodyHtml" ref="bodyHtml"></div>
                 <div class="row">
                     <div class="col-4">
                         <div class="ml-auto">

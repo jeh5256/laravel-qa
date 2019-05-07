@@ -9,7 +9,9 @@
                 <hr />
                 <form @submit.prevent="create">
                     <div class="form-group">
-                        <textarea class="form-control" name="body" rows="7" v-model="body" required></textarea>
+                        <editor :body="body" name="new-answer">
+                            <textarea class="form-control" name="body" rows="7" v-model="body" required></textarea>
+                        </editor>
                     </div>
                     <div class="form-group">
                         <button 
@@ -27,8 +29,10 @@
 </div>
 </template>
 <script>
+import Editor from './Editor';
 export default {
     props: ['questionId'],
+    components: { Editor },
     computed: {
         isInvalid() {
             return !this.signedIn || this.body.length < 10;

@@ -37,9 +37,11 @@
 <script>
 import Answer from './Answer';
 import AddAnswer from './AddAnswer';
+import highlight from '../mixins/highlight';
 
 export default {
     props: ['question'],
+    mixins: [highlight],
     created() {
         this.fetch(`/questions/${this.questionId}/answers`);
     },
@@ -57,6 +59,7 @@ export default {
             questionId: this.question.id,
             count: this.question.answers_count,
             answers: [],
+            answerIds: [],
             nextURL: null
         }
     },
@@ -64,12 +67,23 @@ export default {
         add(answer) {
             this.answers.push(answer);
             this.count++;
+            this.$nextTick(() => {
+                this.highlight(`answer-${answer.id}`);
+            });
         },
         fetch(endpoint) {
+            this.answerIds = [];
+
             axios.get(endpoint)
             .then(({data}) => {
+                this.answerIds = data.data.map(a => a.id);
                 this.answers.push(...data.data);
                 this.nextURL = data.next_page_url;
+            })
+            .then(() => {
+                this.answerIds.forEach(id => {
+                    this.highlight(`answer-${id}`);
+                });
             })
             .catch((err) => console.log(err));
         },
@@ -77,6 +91,6 @@ export default {
             this.answers.splice(index, 1);
             this.count--;
         }
-    }
+    },
 }
 </script>
