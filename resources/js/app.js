@@ -7,7 +7,7 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+window.Vue = require('vue').default;
 
 import VueIzioast from 'vue-izitoast';
 import { type } from 'os';
