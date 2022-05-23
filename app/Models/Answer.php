@@ -1,7 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Models\VoteTrait;
+use Mews\Purifier\Facades\Purifier;
 use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
@@ -40,7 +42,7 @@ class Answer extends Model
 
     public function getBodyHtmlAttribute() 
     {
-        return clean(\Parsedown::instance()->text($this->body));
+        return Purifier::clean(Purifier::instance()->text($this->body));
     }
 
     public function getCreatedDateAttribute() 

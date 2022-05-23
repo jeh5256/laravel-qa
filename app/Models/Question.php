@@ -1,7 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Models\User;
+use App\Models\Answer;
+use App\Models\VoteTrait;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
@@ -23,7 +27,7 @@ class Question extends Model
     public function setTitleAttribute($value) 
     {
         $this->attributes['title'] = $value;
-        $this->attributes['slug'] = str_slug($value);
+        $this->attributes['slug'] = Str::slug($value);
     }
 
     public function getStatusAttribute() 
@@ -92,7 +96,7 @@ class Question extends Model
 
     public function excerpt($length=250)
     {
-        return str_limit(strip_tags($this->bodyHtml()), $length);
+        return Str::limit(strip_tags($this->bodyHtml()), $length);
     }
 
     private function bodyHtml()
