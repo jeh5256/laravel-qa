@@ -1,6 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AnswersController;
+use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\QuestionsController;
+use App\Http\Controllers\VoteAnswerController;
+use App\Http\Controllers\AcceptAnswerController;
+use App\Http\Controllers\VoteQuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,18 +24,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', 'QuestionsController@index');
+Route::get('/', [QuestionsController::class, 'index']);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 //Questions
-Route::resource('questions', 'QuestionsController')->except('show');
-Route::get('/questions/{slug}', 'QuestionsController@show')->name('questions.show');
-Route::resource('questions.answers', 'AnswersController')->except(['create', 'show']);
-Route::post('/questions/{question}/vote', 'VoteQuestionController');
-Route::post('/questions/{question}/favorites', 'FavoritesController@store')->name('questions.favorite');
-Route::delete('/questions/{question}/favorites', 'FavoritesController@destroy')->name('questions.unfavorite');
+Route::resource('questions', QuestionsController::class)->except('show');
+Route::get('/questions/{slug}', [QuestionsController::class, 'show'])->name('questions.show');
+Route::resource('questions.answers', AnswersController::class)->except(['create', 'show']);
+Route::post('/questions/{question}/vote', VoteQuestionController::class);
+Route::post('/questions/{question}/favorites', [FavoritesController::class, 'store'])->name('questions.favorite');
+Route::delete('/questions/{question}/favorites', [FavoritesController::class, 'destroy'])->name('questions.unfavorite');
 
 //Answers
-Route::post('/answers/{answer}/accept', 'AcceptAnswerController')->name('answers.accept');
-Route::post('/answers/{answer}/vote', 'VoteAnswerController');
+Route::post('/answers/{answer}/accept', AcceptAnswerController::class)->name('answers.accept');
+Route::post('/answers/{answer}/vote', VoteAnswerController::class);
