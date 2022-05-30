@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Answer;
 use App\Models\VoteTrait;
 use Illuminate\Support\Str;
+use Mews\Purifier\Facades\Purifier;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
@@ -101,6 +102,6 @@ class Question extends Model
 
     private function bodyHtml()
     {
-        return \Parsedown::instance()->text($this->body);
+        return Purifier::clean($this->body);
     }
 }

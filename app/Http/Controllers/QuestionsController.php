@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\AskQuestionRequest;
@@ -21,8 +22,12 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        $questions = Question::with('user')->latest()->paginate(5);
-        return view('questions.index', compact('questions'));
+        return Inertia::render('Questions', [
+            'questions' => Question::with('user')
+                ->latest()
+                ->paginate(5)
+              
+        ]);
     }
 
     /**
