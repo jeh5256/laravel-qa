@@ -13,10 +13,19 @@ class DashboarController extends Controller
     public function __invoke()
     {
         return Inertia::render('Dashboard', [
-            'questions' => Question::where('user_id', auth()->user()->id)
-                ->paginate(5),
-            'answers' => Answer::where('user_id', auth()->user()->id)
-                ->paginate(5)
+            'questions' => auth()
+                ->user()
+                ->questions()
+                ->take(5)
+                ->latest()
+                ->get(),
+            'answers' => auth()
+                ->user()
+                ->answers()
+                ->take(5)
+                ->latest()
+                ->get(),
+           
         ]);
     }
 }
