@@ -42,7 +42,7 @@ class Answer extends Model
 
     public function getBodyHtmlAttribute() 
     {
-        return Purifier::clean(Purifier::instance()->text($this->body));
+        return Purifier::clean($this->body);
     }
 
     public function getCreatedDateAttribute() 
