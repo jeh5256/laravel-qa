@@ -32,4 +32,8 @@ Route::get('/dashboard', DashboarController::class)
 
 require __DIR__.'/auth.php';
 
-Route::resource('questions', QuestionsController::class)->except('show');
+Route::resource('questions', QuestionsController::class)
+    ->except('show')
+    ->names([
+        'index' => 'questions'
+    ]);
