@@ -3,8 +3,8 @@
         <span 
             class="flex items-center mr-2 text-center font-bold"
             :class="{
-                'text-green-900': item.vote_count >= 0,
-                'text-red-900': item.vote_count < 0
+                'text-green-700': item.vote_count >= 0,
+                'text-red-700': item.vote_count < 0
             }"
         >
             {{ item.vote_count }} votes
