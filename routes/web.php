@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\DashboarController;
-use App\Http\Controllers\QuestionsController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\DashboarController;
+use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\QuestionsController;
+use App\Http\Controllers\VoteQuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +39,7 @@ Route::resource('questions', QuestionsController::class)
     ->names([
         'index' => 'questions'
     ]);
+
+Route::post('/questions/{question}/vote', VoteQuestionController::class)->name('questions.upvote');
+
+Route::post('/questions/{question}/favorites', FavoritesController::class)->name('questions.favorite');
