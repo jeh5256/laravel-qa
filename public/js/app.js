@@ -40546,7 +40546,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/formatDistance/index.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/formatDistance/index.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -40561,8 +40563,27 @@ __webpack_require__.r(__webpack_exports__);
     var expose = _ref.expose;
     expose();
     var props = __props;
+
+    var _vote = function _vote(vote) {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post("/questions/".concat(props.question.id, "/vote"), {
+        vote: vote
+      });
+    };
+
+    var upVote = function upVote() {
+      _vote(1);
+    };
+
+    var downVote = function downVote() {
+      _vote(-1);
+    };
+
+    var favoriteQuestion = function favoriteQuestion() {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post("/questions/".concat(props.question.id, "/favorites"));
+    };
+
     var askedAt = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
-      return (0,date_fns__WEBPACK_IMPORTED_MODULE_1__["default"])(new Date(props.question.created_at), new Date(), {
+      return (0,date_fns__WEBPACK_IMPORTED_MODULE_2__["default"])(new Date(props.question.created_at), new Date(), {
         addSuffix: true
       });
     });
@@ -40574,11 +40595,16 @@ __webpack_require__.r(__webpack_exports__);
     });
     var __returned__ = {
       props: props,
+      _vote: _vote,
+      upVote: upVote,
+      downVote: downVote,
+      favoriteQuestion: favoriteQuestion,
       askedAt: askedAt,
       votesText: votesText,
       hasUserFavorited: hasUserFavorited,
       computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed,
-      formatDistance: date_fns__WEBPACK_IMPORTED_MODULE_1__["default"]
+      formatDistance: date_fns__WEBPACK_IMPORTED_MODULE_2__["default"],
+      Inertia: _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -41638,44 +41664,58 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_3 = {
-  "class": "border-b border-slate-400 flex justify-around md:justify-between"
+  "class": "w-3/4 md:w-full over"
 };
 var _hoisted_4 = {
-  "class": "font-bold"
+  "class": "border-b border-slate-400 flex justify-around md:justify-between"
 };
 var _hoisted_5 = {
+  "class": "font-bold"
+};
+var _hoisted_6 = {
   "class": "mt-2 text-sm"
 };
-var _hoisted_6 = ["innerHTML"];
+var _hoisted_7 = ["innerHTML"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_font_awesome_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("font-awesome-icon");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["mr-4 md:mr-8 font-bold flex items-center justify-center text-center", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["mr-4 md:mr-8 font-bold flex items-center justify-center text-center flex-col", {
       'text-green-700': $props.question.vote_count >= 0,
       'text-red-700': $props.question.vote_count < 0
     }])
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.question.vote_count) + " ", 1
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: "fa-solid fa-arrow-up",
+    "class": "text-2xl text-orange-500 mb-3 font-extrabold cursor-pointer",
+    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.upVote, ["prevent"])
+  }, null, 8
+  /* PROPS */
+  , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.question.vote_count) + " ", 1
   /* TEXT */
-  ), _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.votesText), 1
+  ), _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.votesText) + " ", 1
   /* TEXT */
-  )], 2
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: "fa-solid fa-arrow-down",
+    "class": "text-2xl text-blue-400 mt-3 font-extrabold cursor-pointer",
+    onClick: $setup.downVote
+  })], 2
   /* CLASS */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.question.title), 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.question.title), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: $setup.hasUserFavorited,
-    "class": "text-2xl text-yellow-500 mb-3"
+    "class": "text-2xl text-yellow-500 mb-3 cursor-pointer",
+    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.favoriteQuestion, ["prevent"])
   }, null, 8
   /* PROPS */
-  , ["icon"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, " Asked by " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.question.user.name) + " at " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.askedAt), 1
+  , ["icon", "onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, " Asked by " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.question.user.name) + " at " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.askedAt), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     innerHTML: $props.question.body,
-    "class": "pt-5 bg-gray-200 p-4 mt-5 rounded-md"
+    "class": "pt-5 bg-gray-200 p-4 mt-5 rounded-md text-ellipsis overflow-hidden"
   }, null, 8
   /* PROPS */
-  , _hoisted_6)])]);
+  , _hoisted_7)])]);
 }
 
 /***/ }),
@@ -42943,7 +42983,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faStar, _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faStar);
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faStar, _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faStar, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faArrowUp, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faArrowDown);
 var appName = ((_window$document$getE = window.document.getElementsByTagName('title')[0]) === null || _window$document$getE === void 0 ? void 0 : _window$document$getE.innerText) || 'Laravel';
 (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.createInertiaApp)({
   title: function title(_title) {
