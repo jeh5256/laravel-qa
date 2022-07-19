@@ -12,9 +12,9 @@ class VoteQuestionController extends Controller
         $this->middleware('auth');
     }
 
-    public function __invoke(Question $question)
+    public function __invoke(Question $question, Request $request)
     {
-        $vote = (int) request()->vote;
+        $vote = (int) $request->input('vote');
         $votesCount = auth()->user()->voteForQuestion($question, $vote);
 
         if (request()->expectsJson()) {
