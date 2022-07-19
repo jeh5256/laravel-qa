@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Question;
+use App\Models\Question;
 
 class FavoritesController extends Controller
 {
@@ -12,20 +12,9 @@ class FavoritesController extends Controller
         $this->middleware('auth');
     }
 
-    public function store(Question $question)
+    public function __invoke(Question $question)
     {
-        $question->questionFavorites()->attach(auth()->id());
-
-        if (request()->expectsJson()) {
-            return response()->json(null, 204);
-        }
-
-        return back();
-    }
-
-    public function destroy(Question $question)
-    {
-        $question->questionFavorites()->detach(auth()->id());
+        $question->questionFavorites()->toggle(auth()->user()->id);
 
         if (request()->expectsJson()) {
             return response()->json(null, 204);
