@@ -8,10 +8,12 @@ use App\Models\VoteTrait;
 use Illuminate\Support\Str;
 use Mews\Purifier\Facades\Purifier;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Question extends Model
 {
     use VoteTrait;
+    use HasFactory;
 
     protected $fillable = [
         'title', 'body'

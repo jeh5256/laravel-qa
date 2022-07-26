@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Models\VoteTrait;
 use Mews\Purifier\Facades\Purifier;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Answer extends Model
 {   
     use VoteTrait;
+    use HasFactory;
 
     protected $fillable = ['body', 'user_id'];
 
