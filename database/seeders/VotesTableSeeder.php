@@ -1,9 +1,12 @@
 <?php
 
+namespace Database\Seeders;
+
+use App\Models\User;
+use App\Models\Answer;
+use App\Models\Question;
 use Illuminate\Database\Seeder;
-use App\User;
-use App\Question;
-use App\Answer;
+use Illuminate\Support\Facades\DB;
 
 class VotesTableSeeder extends Seeder
 {
@@ -14,7 +17,7 @@ class VotesTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('votes')->delete();
+        DB::table('votes')->delete();
         $users = User::all();
         $numberOfUsers = $users->count();
         $votes = [-1, 1];

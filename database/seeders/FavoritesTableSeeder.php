@@ -1,8 +1,11 @@
 <?php
 
+namespace Database\Seeders;
+
+use App\Models\User;
+use App\Models\Question;
 use Illuminate\Database\Seeder;
-use App\User;
-use App\Question;
+use Illuminate\Support\Facades\DB;
 
 class FavoritesTableSeeder extends Seeder
 {
