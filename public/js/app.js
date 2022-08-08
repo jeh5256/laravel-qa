@@ -40578,6 +40578,17 @@ __webpack_require__.r(__webpack_exports__);
       _vote(-1);
     };
 
+    var userUpvoted = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      var _ref2;
+
+      return (_ref2 = props.question.user_voted === 'upvoted') !== null && _ref2 !== void 0 ? _ref2 : false;
+    });
+    var userDownvoted = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      var _ref3;
+
+      return (_ref3 = props.question.user_voted === 'downvoted') !== null && _ref3 !== void 0 ? _ref3 : false;
+    });
+
     var favoriteQuestion = function favoriteQuestion() {
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post("/questions/".concat(props.question.id, "/favorites"));
     };
@@ -40598,6 +40609,8 @@ __webpack_require__.r(__webpack_exports__);
       _vote: _vote,
       upVote: upVote,
       downVote: downVote,
+      userUpvoted: userUpvoted,
+      userDownvoted: userDownvoted,
       favoriteQuestion: favoriteQuestion,
       askedAt: askedAt,
       votesText: votesText,
@@ -41686,11 +41699,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }])
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: "fa-solid fa-arrow-up",
-    "class": "text-2xl text-orange-500 mb-3 font-extrabold cursor-pointer",
+    "class": "text-2xl text-orange-500 mb-3 cursor-pointer",
+    transform: {
+      'grow-5': $setup.userUpvoted
+    },
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.upVote, ["prevent"])
   }, null, 8
   /* PROPS */
-  , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.question.vote_count) + " ", 1
+  , ["transform", "onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.question.vote_count) + " ", 1
   /* TEXT */
   ), _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.votesText) + " ", 1
   /* TEXT */
@@ -41705,10 +41721,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: $setup.hasUserFavorited,
     "class": "text-2xl text-yellow-500 mb-3 cursor-pointer",
+    "data-fa-transform": {
+      'grow-5': $setup.userDownvoted
+    },
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.favoriteQuestion, ["prevent"])
   }, null, 8
   /* PROPS */
-  , ["icon", "onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, " Asked by " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.question.user.name) + " at " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.askedAt), 1
+  , ["icon", "data-fa-transform", "onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, " Asked by " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.question.user.name) + " at " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.askedAt), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     innerHTML: $props.question.body,
