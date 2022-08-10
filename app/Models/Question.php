@@ -20,7 +20,7 @@ class Question extends Model
     ];
 
     protected $appends = [
-        'created_date', 'is_favorited', 'favorites_count', 'body_html'
+        'created_date', 'is_favorited', 'favorites_count', 'body_html', 'user_voted'
     ];
 
     public function user() {
@@ -80,6 +80,25 @@ class Question extends Model
     public function isFavorited()
     {
         return $this->questionFavorites()->where('user_id', auth()->id())->count() > 0;
+    }
+
+    public function getUserVote()
+    {
+       $user_voted = $this->votes()
+            ->withPivot('vote')
+            ->wherePivotNotNull('vote')
+            ->first();
+
+            if (!$user_voted) {
+                return false;
+            }
+
+            return $user_voted->pivot->vote === 1  ? 'upvoted' : 'downvoted';
+    }
+
+    public function getUserVotedAttribute()
+    {
+        return $this->getUserVote();
     }
 
     public function getIsFavoritedAttribute()
