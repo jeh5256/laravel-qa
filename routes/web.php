@@ -35,9 +35,9 @@ Route::get('/dashboard', DashboarController::class)
 require __DIR__.'/auth.php';
 
 Route::resource('questions', QuestionsController::class)
-    ->except('show')
     ->names([
-        'index' => 'questions'
+        'index' => 'questions',
+        'show' => 'questions.show'
     ]);
 
 Route::post('/questions/{question}/vote', VoteQuestionController::class)->name('questions.upvote');
