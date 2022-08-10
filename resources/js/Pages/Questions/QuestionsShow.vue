@@ -1,6 +1,4 @@
 <template>
-    <Head title="Questions" />
-
     <BreezeAuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -12,28 +10,28 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200 flex flex-col">
-                        <QuestionItem 
-                            v-for="question in questions.data" 
-                            :question="question"
-                            :key="question.id"
-                        />
+                        <Question-item :question="question" />
+                        <AnswerItem v-for="answer in answers" :answer="answer" :key="answer.id" />
                     </div>
                 </div>
             </div>
         </div>
     </BreezeAuthenticatedLayout>
-    
 </template>
 
 <script setup>
-    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-    import { Head } from '@inertiajs/inertia-vue3';
-    import QuestionItem from "../Components/Questions/QuestionItem.vue"
+import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+import QuestionItem from '../../components/Questions/QuestionItem.vue';
+import AnswerItem from '../../components/Answers/AnswerItem.vue';
 
-    defineProps({
-        'questions': {
-            type: Object,
-            required: true
-        }
-    })
+const props = defineProps({
+    'question': {
+        required: true,
+        type: Object
+    },
+    'answers': {
+        required: true,
+        type: Array
+    }
+})
 </script>

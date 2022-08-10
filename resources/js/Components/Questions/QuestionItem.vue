@@ -32,7 +32,9 @@
         <div class="w-3/4 md:w-full over">
             <div class="border-b border-slate-400 flex justify-around md:justify-between">
                 <h3 class="font-bold">
+                    <Link :href="`/questions/${props.question.slug}`">
                     {{ question.title }}
+                    </Link>
                 </h3>
                 <font-awesome-icon 
                     :icon="hasUserFavorited" 
@@ -53,9 +55,10 @@
 </template>
 
 <script setup>
-    import { computed } from 'vue';
-    import { formatDistance } from 'date-fns'
+    import { computed } from 'vue'
+    import { formatDistance } from 'date-fns';
     import { Inertia } from '@inertiajs/inertia';
+    import { Link } from '@inertiajs/inertia-vue3'
 
     const props = defineProps({
         question: {
