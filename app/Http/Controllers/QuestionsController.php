@@ -18,7 +18,7 @@ class QuestionsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
@@ -57,12 +57,18 @@ class QuestionsController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function show(Question $question)
     {
         $question->increment('views');
-        return view('questions.show', compact('question'));
+
+        $question->load(['answers', 'user']);
+
+        return Inertia::render('Questions/QuestionsShow', [
+            'question' => $question,
+            'answers' => $question->answers
+        ]);
     }
 
     /**
