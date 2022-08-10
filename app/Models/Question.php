@@ -84,16 +84,17 @@ class Question extends Model
 
     public function getUserVote()
     {
-       $user_voted = $this->votes()
+        $user_voted = $this->votes()
+            ->where('id', auth()->id())
             ->withPivot('vote')
             ->wherePivotNotNull('vote')
             ->first();
 
-            if (!$user_voted) {
-                return false;
-            }
+        if (!$user_voted) {
+            return false;
+        }
 
-            return $user_voted->pivot->vote === 1  ? 'upvoted' : 'downvoted';
+        return $user_voted->pivot->vote === 1  ? 'upvoted' : 'downvoted';
     }
 
     public function getUserVotedAttribute()

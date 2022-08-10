@@ -9,14 +9,24 @@
         >
             <font-awesome-icon
                 icon="fa-solid fa-arrow-up" 
-                class="text-2xl text-orange-500 mb-3 font-extrabold cursor-pointer" 
+                class="text-2xl mb-3 font-extrabold cursor-pointer" 
+                :class="{
+                    'text-orange-400': !userUpvoted,
+                    'text-orange-600' : userUpvoted
+                }"
+                transform="grow-5"
                 @click.prevent="upVote"
             />
-            {{ question.vote_count }} <br />{{ votesText }}
-            <font-awesome-icon 
-                icon="fa-solid fa-arrow-down"
+            {{ question.vote_count }}
+            <font-awesome-icon
+                icon="fa-solid fa-arrow-up" 
                 class="text-2xl text-blue-400 mt-3 font-extrabold cursor-pointer" 
-                @click="downVote"
+                :class="{
+                    'text-blue-400': !userDownVoted,
+                    'text-blue-600' : userDownVoted
+                }"
+                transform="grow-5 rotate-180"
+                @click.prevent="downVote"
             />
         </div>
         <div class="w-3/4 md:w-full over">
@@ -74,6 +84,14 @@
 
     const askedAt = computed(() => {
         return formatDistance(new Date(props.question.created_at), new Date(), { addSuffix: true });
+    });
+
+    const userUpvoted = computed(() => {
+        return props.question.user_voted === 'upvoted';
+    });
+
+     const userDownVoted = computed(() => {
+        return props.question.user_voted === 'downvoted'
     });
 
     const votesText = computed(() => {
