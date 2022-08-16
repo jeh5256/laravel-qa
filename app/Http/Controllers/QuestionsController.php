@@ -22,7 +22,7 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Questions', [
+        return Inertia::render('Questions/QuestionsIndex', [
             'questions' => Question::with('user')
                 ->latest()
                 ->paginate(5)
