@@ -63,7 +63,7 @@ class QuestionsController extends Controller
     {
         $question->increment('views');
 
-        $question->load(['answers', 'user']);
+        $question->load(['answers', 'answers.user', 'user']);
 
         return Inertia::render('Questions/QuestionsShow', [
             'question' => $question,
