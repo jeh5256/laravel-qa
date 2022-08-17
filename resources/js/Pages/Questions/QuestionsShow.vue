@@ -16,8 +16,8 @@
             </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <h3>Answers ({{ totalAnswers }})</h3>
                     <div class="p-6 bg-white border-b border-gray-200 flex flex-col">
+                        <h3 class="text-xl">Answers ({{ totalAnswers }})</h3>
                         <AnswerItem v-for="answer in answers" :answer="answer" :key="answer.id" />
                     </div>
                 </div>
