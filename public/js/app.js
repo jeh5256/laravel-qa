@@ -40174,10 +40174,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/formatDistance/index.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/formatDistance/index.js");
 /* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
-/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
-
 
 
 
@@ -40213,7 +40211,7 @@ __webpack_require__.r(__webpack_exports__);
     };
 
     var askedAt = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
-      return (0,date_fns__WEBPACK_IMPORTED_MODULE_3__["default"])(new Date(props.answer.created_at), new Date(), {
+      return (0,date_fns__WEBPACK_IMPORTED_MODULE_2__["default"])(new Date(props.answer.created_at), new Date(), {
         addSuffix: true
       });
     });
@@ -40226,9 +40224,6 @@ __webpack_require__.r(__webpack_exports__);
     var votesText = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return props.answer.votes_count > 1 ? 'Votes' : 'Vote';
     });
-    var hasUserFavorited = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
-      return props.answer.is_favorited ? 'fa-solid fa-star' : 'fa-regular fa-star';
-    });
     var __returned__ = {
       props: props,
       _vote: _vote,
@@ -40239,11 +40234,9 @@ __webpack_require__.r(__webpack_exports__);
       userUpvoted: userUpvoted,
       userDownVoted: userDownVoted,
       votesText: votesText,
-      hasUserFavorited: hasUserFavorited,
       computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed,
-      formatDistance: date_fns__WEBPACK_IMPORTED_MODULE_3__["default"],
-      Inertia: _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia,
-      Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.Link
+      formatDistance: date_fns__WEBPACK_IMPORTED_MODULE_2__["default"],
+      Inertia: _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -41479,10 +41472,10 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "w-3/4 md:w-full over"
 };
-var _hoisted_3 = {
+var _hoisted_3 = ["innerHTML"];
+var _hoisted_4 = {
   "class": "mt-2 text-sm"
 };
-var _hoisted_4 = ["innerHTML"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_font_awesome_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("font-awesome-icon");
 
@@ -41514,21 +41507,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 8
   /* PROPS */
   , ["class", "onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
-    icon: $setup.hasUserFavorited,
-    "class": "text-2xl text-yellow-500 mb-3 cursor-pointer mt-5",
+    icon: "fa-solid fa-check",
+    transform: "grow-5",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-2xl mb-3 cursor-pointer mt-5", {
+      'text-green-500': $props.answer.is_best_answer,
+      'text-gray-600': !$props.answer.is_best_answer
+    }]),
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(_ctx.favoriteAnswer, ["prevent"])
   }, null, 8
   /* PROPS */
-  , ["icon", "onClick"])], 2
+  , ["class", "onClick"])], 2
   /* CLASS */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, " Answered by " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.answer.user.name) + " at " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.askedAt), 1
-  /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     innerHTML: $props.answer.body,
     "class": "pt-5 bg-gray-200 p-4 mt-5 rounded-md text-ellipsis overflow-hidden"
   }, null, 8
   /* PROPS */
-  , _hoisted_4)])]);
+  , _hoisted_3), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, " Answered by " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.answer.user.name) + " at " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.askedAt), 1
+  /* TEXT */
+  )])]);
 }
 
 /***/ }),
@@ -43305,7 +43302,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faStar, _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faStar, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faArrowUp, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faArrowDown);
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__.library.add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faStar, _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_6__.faStar, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faArrowUp, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faArrowDown, _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faCheck);
 var appName = ((_window$document$getE = window.document.getElementsByTagName('title')[0]) === null || _window$document$getE === void 0 ? void 0 : _window$document$getE.innerText) || 'Laravel';
 (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.createInertiaApp)({
   title: function title(_title) {
