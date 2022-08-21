@@ -29,19 +29,24 @@
                 @click.prevent="downVote"
             />
             <font-awesome-icon 
-                :icon="hasUserFavorited" 
-                class="text-2xl text-yellow-500 mb-3 cursor-pointer mt-5" 
+                icon="fa-solid fa-check" 
+                transform="grow-5"
+                class="text-2xl mb-3 cursor-pointer mt-5"
+                :class="{
+                    'text-green-500': answer.is_best_answer,
+                    'text-gray-600': !answer.is_best_answer
+                }"
                 @click.prevent="favoriteAnswer"
             />
         </div>
         <div class="w-3/4 md:w-full over">
-            <div class="mt-2 text-sm">
-                Answered by {{ answer.user.name }} at {{ askedAt }}
-            </div>
             <div 
                 v-html="answer.body"
                 class="pt-5 bg-gray-200 p-4 mt-5 rounded-md text-ellipsis overflow-hidden"
             >
+            </div>
+            <div class="mt-2 text-sm">
+                Answered by {{ answer.user.name }} at {{ askedAt }}
             </div>
         </div>
     </div>
@@ -91,9 +96,5 @@
 
     const votesText = computed(() => {
         return props.answer.votes_count > 1 ? 'Votes' : 'Vote';
-    });
-
-    const hasUserFavorited = computed(() => {
-        return props.answer.is_favorited ? 'fa-solid fa-star' : 'fa-regular fa-star';
     });
 </script>
