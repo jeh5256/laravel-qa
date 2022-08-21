@@ -5,10 +5,10 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faStar, faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faArrowUp, faArrowDown, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faStar as farStar} from '@fortawesome/free-regular-svg-icons';
 
-library.add(faStar, farStar, faArrowUp, faArrowDown);
+library.add(faStar, farStar, faArrowUp, faArrowDown, faCheck);
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
