@@ -14,7 +14,7 @@ class Answer extends Model
 
     protected $fillable = ['body', 'user_id'];
 
-    protected $appends = ['created_date', 'body_html', 'is_best_answer'];
+    protected $appends = ['created_date', 'body_html', 'is_best_answer', 'user_voted'];
 
     public static function boot() {
         parent::boot();
@@ -65,4 +65,25 @@ class Answer extends Model
     {
         return $this->isBestAnswer() ? 'vote-accepted' : '';
     }
+
+    public function getUserVote()
+    {
+        $user_voted = $this->votes()
+            ->where('id', auth()->id())
+            ->withPivot('vote')
+            ->wherePivotNotNull('vote')
+            ->first();
+
+        if (!$user_voted) {
+            return false;
+        }
+
+        return $user_voted->pivot->vote === 1  ? 'upvoted' : 'downvoted';
+    }
+
+    public function getUserVotedAttribute()
+    {
+        return $this->getUserVote();
+    }
+
 }
