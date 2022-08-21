@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Answer;
-use App\Question;
+use App\Models\Answer;
+use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AnswersController extends Controller
 {
@@ -22,6 +23,7 @@ class AnswersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param \App\Models\Question
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -30,10 +32,9 @@ class AnswersController extends Controller
         
         $answer = $question->answers()->create($request->validate([
             'body' => 'required'
-        ]) + ['user_id' => \Auth::id()]);
+        ]) + ['user_id' => Auth::id()]);
 
-        if ($request->expectsJson()) 
-        {
+        if ($request->expectsJson()) {
             return response()->json([
                 'message' => 'Your answer has been submitted',
                 'answer' => $answer->load('user')
@@ -71,8 +72,7 @@ class AnswersController extends Controller
             'body' => 'required'
         ]));
         
-        if ($request->expectsJson()) 
-        {
+        if ($request->expectsJson()) {
             return response()->json([
                 'message' => 'Your answer has been updated',
                 'body_html' => $answer->body_html
@@ -87,10 +87,10 @@ class AnswersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Answer  $answer
+     * @param  \App\Models\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Question $question, Answer $answer)
+    public function destroy(Answer $answer)
     {
         $this->authorize('delete', $answer);
         $answer->delete();
