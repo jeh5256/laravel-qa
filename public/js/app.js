@@ -40206,8 +40206,12 @@ __webpack_require__.r(__webpack_exports__);
       _vote(-1);
     };
 
-    var favoriteanswer = function favoriteanswer() {
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post("/answers/".concat(props.answer.id, "/favorites"));
+    var favoriteAnswer = function favoriteAnswer() {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post("/answers/".concat(props.answer.id, "/accept")).then(function () {
+        console.log('then');
+      })["catch"](function () {
+        console.log('error');
+      });
     };
 
     var askedAt = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
@@ -40229,7 +40233,7 @@ __webpack_require__.r(__webpack_exports__);
       _vote: _vote,
       upVote: upVote,
       downVote: downVote,
-      favoriteanswer: favoriteanswer,
+      favoriteAnswer: favoriteAnswer,
       askedAt: askedAt,
       userUpvoted: userUpvoted,
       userDownVoted: userDownVoted,
@@ -41513,7 +41517,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       'text-green-500': $props.answer.is_best_answer,
       'text-gray-600': !$props.answer.is_best_answer
     }]),
-    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(_ctx.favoriteAnswer, ["prevent"])
+    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.favoriteAnswer, ["prevent"])
   }, null, 8
   /* PROPS */
   , ["class", "onClick"])], 2
