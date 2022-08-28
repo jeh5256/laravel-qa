@@ -40185,6 +40185,11 @@ __webpack_require__.r(__webpack_exports__);
     'answer': {
       required: true,
       type: Object
+    },
+    canUserMarkAsBestAnswer: {
+      require: false,
+      "default": false,
+      type: Boolean
     }
   },
   setup: function setup(__props, _ref) {
@@ -40207,11 +40212,7 @@ __webpack_require__.r(__webpack_exports__);
     };
 
     var favoriteAnswer = function favoriteAnswer() {
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post("/answers/".concat(props.answer.id, "/accept")).then(function () {
-        console.log('then');
-      })["catch"](function () {
-        console.log('error');
-      });
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post("/answers/".concat(props.answer.id, "/accept"));
     };
 
     var askedAt = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
@@ -41392,6 +41393,10 @@ __webpack_require__.r(__webpack_exports__);
     'answers': {
       required: true,
       type: Array
+    },
+    'can': {
+      required: false,
+      type: Object
     }
   },
   setup: function setup(__props, _ref) {
@@ -41510,7 +41515,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.downVote, ["prevent"])
   }, null, 8
   /* PROPS */
-  , ["class", "onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+  , ["class", "onClick"]), $props.canUserMarkAsBestAnswer ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_font_awesome_icon, {
+    key: 0,
     icon: "fa-solid fa-check",
     transform: "grow-5",
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-2xl mb-3 cursor-pointer mt-5", {
@@ -41520,7 +41526,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.favoriteAnswer, ["prevent"])
   }, null, 8
   /* PROPS */
-  , ["class", "onClick"])], 2
+  , ["class", "onClick"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
   /* CLASS */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     innerHTML: $props.answer.body,
@@ -42153,8 +42159,6 @@ var _hoisted_29 = {
   "class": "max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_templte = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("templte");
-
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("nav", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Primary Navigation Menu "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Logo "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
     href: _ctx.route('dashboard')
   }, {
@@ -42197,6 +42201,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     align: "right",
     width: "48"
   }, {
+    trigger: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.auth.user.name) + " ", 1
+      /* TEXT */
+      ), _hoisted_14])])];
+    }),
     content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["BreezeDropdownLink"], {
         href: _ctx.route('logout'),
@@ -42212,18 +42221,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8
       /* PROPS */
       , ["href"])];
-    }),
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_templte, null, {
-        trigger: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.auth.user.name) + " ", 1
-          /* TEXT */
-          ), _hoisted_14])])];
-        }),
-        _: 1
-        /* STABLE */
-
-      })];
     }),
     _: 1
     /* STABLE */
@@ -43161,12 +43158,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["question"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_9, "Answers (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.totalAnswers) + ")", 1
       /* TEXT */
       ), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.answers, function (answer) {
+        var _$props$can;
+
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["AnswerItem"], {
           answer: answer,
-          key: answer.id
+          key: answer.id,
+          canUserMarkAsBestAnswer: (_$props$can = $props.can) === null || _$props$can === void 0 ? void 0 : _$props$can.markAsBestAnswer
         }, null, 8
         /* PROPS */
-        , ["answer"]);
+        , ["answer", "canUserMarkAsBestAnswer"]);
       }), 128
       /* KEYED_FRAGMENT */
       ))])])])])];
