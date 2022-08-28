@@ -36,6 +36,7 @@
                     'text-green-500': answer.is_best_answer,
                     'text-gray-600': !answer.is_best_answer
                 }"
+                v-if="canUserMarkAsBestAnswer"
                 @click.prevent="favoriteAnswer"
             />
         </div>
@@ -61,6 +62,11 @@
         'answer' : {
             required: true,
             type: Object
+        },
+        canUserMarkAsBestAnswer: {
+            require: false,
+            default: false,
+            type: Boolean
         }
     });
 
@@ -78,8 +84,8 @@
         _vote(-1);
     };
 
-    const favoriteanswer = () => {
-        Inertia.post(`/answers/${props.answer.id}/favorites`);
+    const favoriteAnswer = () => {
+        Inertia.post(`/answers/${props.answer.id}/accept`);
     };
 
     const askedAt = computed(() => {
