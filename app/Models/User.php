@@ -55,6 +55,7 @@ class User extends Authenticatable
     public function getAvatarAttribute() {
         $email = $this->email;
         $size = 32;
+
         return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s=" . $size;
     }
 
@@ -76,12 +77,14 @@ class User extends Authenticatable
     public function voteForQuestion(Question $question, $vote)
     {
         $voteQuestions = $this->voteQuestions();
+
         return $this->_vote($voteQuestions, $question, $vote);
     }
 
     public function voteForAnswer(Answer $answer, $vote)
     {
         $voteAnswers = $this->voteAnswers();
+
         return $this->_vote($voteAnswers, $answer, $vote);   
     }  
 
@@ -98,7 +101,6 @@ class User extends Authenticatable
         }
 
         if ($existing && $existing->pivot->vote !== intval($vote)) {
-           
             $relationship->updateExistingPivot($model, ['vote' => $vote]);
         }
        
