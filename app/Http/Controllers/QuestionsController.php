@@ -67,7 +67,10 @@ class QuestionsController extends Controller
 
         return Inertia::render('Questions/QuestionsShow', [
             'question' => $question,
-            'answers' => $question->answers
+            'answers' => $question->answers,
+            'can' => [
+                'markAsBestAnswer' => $question->user_id === auth()?->id(),
+            ]
         ]);
     }
 
