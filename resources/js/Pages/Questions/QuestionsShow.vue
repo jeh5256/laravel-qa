@@ -18,7 +18,12 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200 flex flex-col">
                         <h3 class="text-xl">Answers ({{ totalAnswers }})</h3>
-                        <AnswerItem v-for="answer in answers" :answer="answer" :key="answer.id" />
+                        <AnswerItem 
+                            v-for="answer in answers" 
+                            :answer="answer"
+                            :key="answer.id" 
+                            :canUserMarkAsBestAnswer="can?.markAsBestAnswer"
+                        />
                     </div>
                 </div>
             </div>
@@ -27,23 +32,27 @@
 </template>
 
 <script setup>
-import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-import QuestionItem from '../../Components/Questions/QuestionItem.vue';
-import AnswerItem from '../../Components/Answers/AnswerItem.vue';
-import { computed } from 'vue';
+    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+    import QuestionItem from '../../Components/Questions/QuestionItem.vue';
+    import AnswerItem from '../../Components/Answers/AnswerItem.vue';
+    import { computed } from 'vue';
 
-const props = defineProps({
-    'question': {
-        required: true,
-        type: Object
-    },
-    'answers': {
-        required: true,
-        type: Array
-    }
-});
+    const props = defineProps({
+        'question': {
+            required: true,
+            type: Object
+        },
+        'answers': {
+            required: true,
+            type: Array
+        },
+        'can': {
+            required: false,
+            type: Object
+        }
+    });
 
-const totalAnswers = computed(() => {
-    return props.answers.length;
-});
+    const totalAnswers = computed(() => {
+        return props.answers.length;
+    });
 </script>
