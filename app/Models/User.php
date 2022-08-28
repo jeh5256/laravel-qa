@@ -87,11 +87,21 @@ class User extends Authenticatable
 
     private function _vote($relationship, $model, $vote)
     {
-        if ($relationship->where('vote_id', $model->id)->exists()) {
-            $relationship->toggle($model, ['vote' => $vote]);
-        } else {
+        $existing = $relationship->where('vote_id', $model->id)->withPivot('vote')->first();
+
+        if (!$existing) {
             $relationship->attach($model, ['vote' => $vote]);
         }
+        
+        if ($existing && $existing->pivot->vote === intval($vote)) {
+            $relationship->toggle($model, ['vote' => $vote]);
+        }
+
+        if ($existing && $existing->pivot->vote !== intval($vote)) {
+           
+            $relationship->updateExistingPivot($model, ['vote' => $vote]);
+        }
+       
 
         $model->load('votes');
         $downVotes = (int) $model->downVotes()->sum('vote');
