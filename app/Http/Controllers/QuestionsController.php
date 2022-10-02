@@ -63,13 +63,16 @@ class QuestionsController extends Controller
     {
         $question->increment('views');
 
-        $question->load(['answers', 'answers.user', 'user']);
+        $question->load(['answers' => function($query) {
+            return $query->orderBy('created_at', 'desc');
+        }, 'answers.user', 'user']);
 
         return Inertia::render('Questions/QuestionsShow', [
             'question' => $question,
             'answers' => $question->answers,
             'can' => [
                 'markAsBestAnswer' => $question->user_id === auth()?->id(),
+                'addAnswer' => auth()->id() ?? false
             ]
         ]);
     }
