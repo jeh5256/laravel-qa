@@ -64,7 +64,7 @@ class QuestionsController extends Controller
         $question->increment('views');
 
         $question->load(['answers' => function($query) {
-            return $query->orderBy('created_at', 'desc');
+            return $query->latest();
         }, 'answers.user', 'user']);
 
         return Inertia::render('Questions/QuestionsShow', [
