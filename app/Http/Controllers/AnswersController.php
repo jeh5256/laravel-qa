@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnswerRequest;
 use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AnswersController extends Controller
 {
@@ -25,14 +25,14 @@ class AnswersController extends Controller
      *
      * @param \App\Models\Question
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Requests\AnswerRequest;
      */
-    public function store(Question $question, Request $request)
-    {
-        
-        $answer = $question->answers()->create($request->validate([
-            'body' => 'required'
-        ]) + ['user_id' => Auth::id()]);
+    public function store(Question $question, AnswerRequest $request)
+    {   
+        $answer = $question->answers()->create([
+            'body' => $request->body,
+            'user_id' => auth()->id()
+        ]);
 
         if ($request->expectsJson()) {
             return response()->json([
