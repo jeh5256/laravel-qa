@@ -41379,6 +41379,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_Questions_QuestionItem_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Components/Questions/QuestionItem.vue */ "./resources/js/Components/Questions/QuestionItem.vue");
 /* harmony import */ var _Components_Answers_AnswerItem_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Components/Answers/AnswerItem.vue */ "./resources/js/Components/Answers/AnswerItem.vue");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
 
 
 
@@ -41394,6 +41396,9 @@ __webpack_require__.r(__webpack_exports__);
       required: true,
       type: Array
     },
+    'errors': {
+      type: Array
+    },
     'can': {
       required: false,
       type: Object
@@ -41403,16 +41408,31 @@ __webpack_require__.r(__webpack_exports__);
     var expose = _ref.expose;
     expose();
     var props = __props;
+    var answerText = (0,vue__WEBPACK_IMPORTED_MODULE_3__.ref)('');
     var totalAnswers = (0,vue__WEBPACK_IMPORTED_MODULE_3__.computed)(function () {
       return props.answers.length;
     });
+
+    var addAnswer = function addAnswer() {
+      console.log('add answer');
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__.Inertia.post("/questions/".concat(props.question.id, "/answers"), {
+        body: answerText.value
+      }, {
+        preserveScroll: true
+      });
+    };
+
     var __returned__ = {
       props: props,
+      answerText: answerText,
       totalAnswers: totalAnswers,
+      addAnswer: addAnswer,
       BreezeAuthenticatedLayout: _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
       QuestionItem: _Components_Questions_QuestionItem_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
       AnswerItem: _Components_Answers_AnswerItem_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-      computed: vue__WEBPACK_IMPORTED_MODULE_3__.computed
+      computed: vue__WEBPACK_IMPORTED_MODULE_3__.computed,
+      ref: vue__WEBPACK_IMPORTED_MODULE_3__.ref,
+      Inertia: _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__.Inertia
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -43134,6 +43154,7 @@ var _hoisted_5 = {
   "class": "p-6 bg-white border-b border-gray-200 flex flex-col"
 };
 var _hoisted_6 = {
+  key: 0,
   "class": "max-w-7xl mx-auto sm:px-6 lg:px-8 py-8"
 };
 var _hoisted_7 = {
@@ -43142,7 +43163,36 @@ var _hoisted_7 = {
 var _hoisted_8 = {
   "class": "p-6 bg-white border-b border-gray-200 flex flex-col"
 };
-var _hoisted_9 = {
+
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+  "class": "text-xl"
+}, "Submit An Answer", -1
+/* HOISTED */
+);
+
+var _hoisted_10 = ["onSubmit"];
+var _hoisted_11 = {
+  key: 0,
+  "class": "text-sm text-red-600 font-bold"
+};
+
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  type: "submit",
+  "class": "px-4 py-3 bg-green-600 mt-5 rounded-md text-white font-bold"
+}, " Add Answer ", -1
+/* HOISTED */
+);
+
+var _hoisted_13 = {
+  "class": "max-w-7xl mx-auto sm:px-6 lg:px-8 py-8"
+};
+var _hoisted_14 = {
+  "class": "bg-white overflow-hidden shadow-sm sm:rounded-lg"
+};
+var _hoisted_15 = {
+  "class": "p-6 bg-white border-b border-gray-200 flex flex-col"
+};
+var _hoisted_16 = {
   "class": "text-xl"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -43151,19 +43201,35 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [_hoisted_1];
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      var _$props$can, _$props$errors;
+
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["QuestionItem"], {
         question: $props.question
       }, null, 8
       /* PROPS */
-      , ["question"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_9, "Answers (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.totalAnswers) + ")", 1
+      , ["question"])])])]), (_$props$can = $props.can) !== null && _$props$can !== void 0 && _$props$can.addAnswer ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+        "class": "mt-3",
+        onSubmit: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.addAnswer, ["prevent"])
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(_$props$errors = $props.errors) !== null && _$props$errors !== void 0 && _$props$errors.body ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.body), 1
+      /* TEXT */
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+        "class": "w-full",
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+          return $setup.answerText = $event;
+        })
+      }, null, 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.answerText]])]), _hoisted_12], 40
+      /* PROPS, HYDRATE_EVENTS */
+      , _hoisted_10)])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_16, "Answers (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.totalAnswers) + ")", 1
       /* TEXT */
       ), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.answers, function (answer) {
-        var _$props$can;
+        var _$props$can2;
 
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["AnswerItem"], {
           answer: answer,
           key: answer.id,
-          canUserMarkAsBestAnswer: (_$props$can = $props.can) === null || _$props$can === void 0 ? void 0 : _$props$can.markAsBestAnswer
+          canUserMarkAsBestAnswer: (_$props$can2 = $props.can) === null || _$props$can2 === void 0 ? void 0 : _$props$can2.markAsBestAnswer
         }, null, 8
         /* PROPS */
         , ["answer", "canUserMarkAsBestAnswer"]);
