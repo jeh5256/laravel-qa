@@ -1,34 +1,11 @@
 <template>
     <div class="py-3 md:p-6 font my-3 md:m-6 flex">
-        <div 
-            class="mr-4 md:mr-8 font-bold flex items-center justify-center text-center flex-col"
-            :class="{
-                'text-green-700': question.vote_count >= 0,
-                'text-red-700': question.vote_count < 0
-            }"
-        >
-            <font-awesome-icon
-                icon="fa-solid fa-arrow-up" 
-                class="text-2xl mb-3 font-extrabold cursor-pointer" 
-                :class="{
-                    'text-orange-400': !userUpvoted,
-                    'text-orange-600' : userUpvoted
-                }"
-                transform="grow-5"
-                @click.prevent="upVote"
-            />
-            {{ question.vote_count }}
-            <font-awesome-icon
-                icon="fa-solid fa-arrow-up" 
-                class="text-2xl text-blue-400 mt-3 font-extrabold cursor-pointer" 
-                :class="{
-                    'text-blue-400': !userDownVoted,
-                    'text-blue-600' : userDownVoted
-                }"
-                transform="grow-5 rotate-180"
-                @click.prevent="downVote"
-            />
-        </div>
+        <Vote 
+            :voteCount="question.vote_count" 
+            :model="'questions'"
+            :modelId="question.id"
+            :userVoted="question.userVoted"
+        />
         <div class="w-3/4 md:w-full over">
             <div class="border-b border-slate-400 flex justify-around md:justify-between">
                 <h3 class="font-bold">
@@ -55,11 +32,12 @@
 </template>
 
 <script setup>
-    import { computed } from 'vue'
+    import { computed } from 'vue';
     import { formatDistance } from 'date-fns';
     import { Inertia } from '@inertiajs/inertia';
     import { Link } from '@inertiajs/inertia-vue3'
     import { useToast } from 'vue-toast-notification';
+    import Vote from '../Vote.vue';
 
     const $toast = useToast();
 
@@ -101,14 +79,6 @@
 
     const askedAt = computed(() => {
         return formatDistance(new Date(props.question.created_at), new Date(), { addSuffix: true });
-    });
-
-    const userUpvoted = computed(() => {
-        return props.question.user_voted === 'upvoted';
-    });
-
-     const userDownVoted = computed(() => {
-        return props.question.user_voted === 'downvoted'
     });
 
     const votesText = computed(() => {

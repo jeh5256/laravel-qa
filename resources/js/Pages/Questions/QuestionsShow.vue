@@ -72,7 +72,7 @@
             type: Array
         },
         'errors': {
-            type: Array
+            type: Object
         },
         'can': {
             required: false,

@@ -1,33 +1,11 @@
 <template>
     <div class="py-3 md:p-6 font my-3 md:m-6 flex border-b-2 border-gray-300 last:border-b-0">
-        <div 
-            class="mr-4 md:mr-8 font-bold flex items-center justify-center text-center flex-col"
-            :class="{
-                'text-green-700': answer.vote_count >= 0,
-                'text-red-700': answer.vote_count < 0
-            }"
-        >
-            <font-awesome-icon
-                icon="fa-solid fa-arrow-up" 
-                class="text-2xl mb-3 font-extrabold cursor-pointer" 
-                :class="{
-                    'text-orange-400': !userUpvoted,
-                    'text-orange-600' : userUpvoted
-                }"
-                transform="grow-5"
-                @click.prevent="upVote"
-            />
-            {{ answer.vote_count }}
-            <font-awesome-icon
-                icon="fa-solid fa-arrow-up" 
-                class="text-2xl text-blue-400 mt-3 font-extrabold cursor-pointer" 
-                :class="{
-                    'text-blue-400': !userDownVoted,
-                    'text-blue-600' : userDownVoted
-                }"
-                transform="grow-5 rotate-180"
-                @click.prevent="downVote"
-            />
+       <Vote
+            :voteCount="answer.vote_count" 
+            :model="'answers'"
+            :modelId="answer.id"
+            :userVoted="answer.userVoted"
+       >
             <font-awesome-icon 
                 icon="fa-solid fa-check" 
                 transform="grow-5"
@@ -39,7 +17,7 @@
                 v-if="canUserMarkAsBestAnswer"
                 @click.prevent="favoriteAnswer"
             />
-        </div>
+       </Vote>
         <div class="w-3/4 md:w-full over">
             <div 
                 v-html="answer.body"
@@ -58,6 +36,7 @@
     import { formatDistance } from 'date-fns';
     import { Inertia } from '@inertiajs/inertia';
     import { useToast } from 'vue-toast-notification';
+    import Vote from '../Vote.vue';
 
     const $toast = useToast();
 
@@ -72,28 +51,6 @@
             type: Boolean
         }
     });
-
-    const _vote = vote => {
-        
-        Inertia.post(`/answers/${props.answer.id}/vote`, {
-            vote
-        }, {
-            preserveScroll: true,
-            onSuccess: () => {
-                const voteText = vote === -1  ? 'downvoted' : 'upvoted';
-                $toast.success(`Successfully ${voteText} answer`);
-            },
-            onError: () => $toast.success('Something went wrong')
-        });
-    };
-
-    const upVote = () => {
-        _vote(1);
-    };
-
-    const downVote = () => {
-        _vote(-1);
-    };
 
     const favoriteAnswer = () => {
         Inertia.post(`/answers/${props.answer.id}/accept`,{}, {
