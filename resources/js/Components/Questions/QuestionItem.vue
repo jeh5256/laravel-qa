@@ -59,6 +59,9 @@
     import { formatDistance } from 'date-fns';
     import { Inertia } from '@inertiajs/inertia';
     import { Link } from '@inertiajs/inertia-vue3'
+    import { useToast } from 'vue-toast-notification';
+
+    const $toast = useToast();
 
     const props = defineProps({
         question: {
@@ -70,6 +73,13 @@
     const _vote = vote => {
         Inertia.post(`/questions/${props.question.id}/vote`, {
             vote
+        }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                const voteText = vote === -1  ? 'downvoted' : 'upvoted';
+                $toast.success(`Successfully ${voteText} answer`);
+            },
+            onError: () => $toast.success('Something went wrong')
         });
     };
 
@@ -82,7 +92,11 @@
     };
 
     const favoriteQuestion = () => {
-        Inertia.post(`/questions/${props.question.id}/favorites`);
+        Inertia.post(`/questions/${props.question.id}/favorites`,{}, {
+            preserveScroll: true,
+            onSuccess: () => $toast.success(`Successfully (un)favorited questionh`),
+            onError: () => $toast.success('Something went wrong')
+        });
     };
 
     const askedAt = computed(() => {
