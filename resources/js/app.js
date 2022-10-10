@@ -7,6 +7,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faStar, faArrowUp, faArrowDown, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faStar as farStar} from '@fortawesome/free-regular-svg-icons';
+import 'vue-toast-notification/dist/theme-sugar.css';
 
 library.add(faStar, farStar, faArrowUp, faArrowDown, faCheck);
 
