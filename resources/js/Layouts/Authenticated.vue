@@ -45,7 +45,7 @@
                                         </BreezeDropdownLink>
                                     </template>
                                 </BreezeDropdown>
-                                <Link :href="route('login')">Login</Link>
+                                <Link v-if="!$page.props.auth.user" :href="route('login')">Login</Link>
                             </div>
                         </div>
 
