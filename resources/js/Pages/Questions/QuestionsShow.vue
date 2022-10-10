@@ -87,7 +87,6 @@
     });
     
     const addAnswer = () => {
-        console.log('add answer')
         Inertia.post(`/questions/${props.question.id}/answers`, {
             body: answerText.value
         }, {
