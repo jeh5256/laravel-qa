@@ -18,6 +18,7 @@ class AcceptAnswerController extends Controller
                 'message' => 'Marked as best answer'
             ]);
         }
+
         return back();
     }
 }
