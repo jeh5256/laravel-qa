@@ -26,7 +26,7 @@
                                 >
                                     {{ errors.body }}
                                 </span>
-                                <textarea class="w-full" v-model="answerText"></textarea>
+                                <ckeditor :editor="ClassicEditor" v-model="answerText" :config="ckeditorConfig"></ckeditor>
                             </div>
                             <button 
                                 type="submit" 
@@ -35,6 +35,7 @@
                                 Add Answer
                             </button>
                         </form>
+                        
                     </div>
                 </div>
             </div>
@@ -61,6 +62,7 @@
     import AnswerItem from '../../Components/Answers/AnswerItem.vue';
     import { computed, ref } from 'vue';
     import { Inertia } from '@inertiajs/inertia';
+    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
     const props = defineProps({
         'question': {
@@ -81,7 +83,7 @@
     });
 
     const answerText = ref('');
-
+    
     const totalAnswers = computed(() => {
         return props.answers.length;
     });
