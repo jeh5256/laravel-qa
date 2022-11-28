@@ -63,6 +63,10 @@
     });
 
     const _vote = vote => {
+        if (!canVote.value) {
+            return $toast.error('You must be logged in to vote');
+        };
+
         Inertia.post(url.value, {
             vote
         }, {
@@ -71,7 +75,7 @@
                 const voteText = vote === -1  ? 'downvoted' : 'upvoted';
                 $toast.success(`Successfully ${voteText} answer`);
             },
-            onError: () => $toast.success('Something went wrong')
+            onError: () => $toast.error('Something went wrong')
         });
     };
 
@@ -82,7 +86,11 @@
     const downVote = () => {
         _vote(-1);
     };
-    
+
+    const canVote = computed(() => {
+        return  Inertia.page?.props?.auth?.user ? true : false;
+    });
+
     const url = computed(() => {
         return `/${props.model}/${props.modelId}/vote`;
     });
