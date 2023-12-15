@@ -14,7 +14,7 @@ class QuestionFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'title' => $this->faker->words(3, true),
