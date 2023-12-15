@@ -10,7 +10,14 @@
             <div class="border-b border-slate-400 flex justify-around md:justify-between">
                 <h3 class="font-bold">
                     <Link :href="`/questions/${props.question.slug}`">
-                    {{ question.title }}
+                        {{ question.title }}
+                    </Link>
+                    <Link 
+                        v-if="$page.props.auth.user.id === question.user_id"
+                        :href="`/questions/${props.question.slug}`" 
+                        class="text-xs pl-3 text-gray-600 hover:text-gray-400"
+                    >
+                        Edit
                     </Link>
                 </h3>
                 <font-awesome-icon 
@@ -42,6 +49,11 @@
     const $toast = useToast();
 
     const props = defineProps({
+        auth: {
+            type: Object,
+            required: false,
+            default: () => {}
+        },
         question: {
             type: Object,
             required: true
