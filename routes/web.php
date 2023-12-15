@@ -49,7 +49,7 @@ Route::resource('questions', QuestionsController::class)
 Route::post('/questions/{question}/vote', VoteQuestionController::class)->name('questions.upvote');
 Route::post('/questions/{question}/favorites', FavoritesController::class)->name('questions.favorite');
 
-Route::resource('questions.answers', AnswersController::class)->except(['create', 'show']);
+Route::resource('questions.answers', AnswersController::class)->except(['index', 'create', 'show']);
 
 Route::post('/answers/{answer}/accept', AcceptAnswerController::class)->name('answers.accept');
 Route::post('/answers/{answer}/vote', VoteAnswerController::class);
