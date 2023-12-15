@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Answer;
 use Inertia\Inertia;
-use App\Models\Question;
 
 
 class DashboarController extends Controller
