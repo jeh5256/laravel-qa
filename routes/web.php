@@ -39,7 +39,7 @@ require __DIR__.'/auth.php';
 
 Route::resource('questions', QuestionsController::class)
     ->names([
-        'index' => 'questions',
+        'index' => 'questions.index',
         'show' => 'questions.show'
     ])
     ->parameters([
