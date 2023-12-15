@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,8 @@ class AnswerFactory extends Factory
     {
         return [
             'body' => $this->faker->sentence(3),
-            'vote_count' => $this->faker->randomDigit()
+            'vote_count' => $this->faker->randomDigit(),
+            'user_id' => User::class
         ];
     }
 }
