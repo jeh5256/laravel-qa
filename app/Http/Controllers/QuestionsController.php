@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Question;
-use Illuminate\Http\Request;
 use App\Http\Requests\AskQuestionRequest;
 
 class QuestionsController extends Controller
@@ -37,8 +36,11 @@ class QuestionsController extends Controller
      */
     public function create()
     {   
-        $question = new Question();
-        return view('questions.create', compact('question'));
+        return Inertia::render('Questions/QuestionsCreate', [
+            'can' => [
+                'addQuestion' => auth()->id() ?? false
+            ]
+        ]);
     }
 
     /**
@@ -50,7 +52,8 @@ class QuestionsController extends Controller
     public function store(AskQuestionRequest $request)
     {
         $request->user()->questions()->create($request->only('title', 'body'));
-        return redirect()->route('questions.index')->with('success', "Your question has been submitted");
+
+        return redirect('/questions')->with('success', 'Your question has created');
     }
 
     /**
@@ -86,7 +89,6 @@ class QuestionsController extends Controller
     public function edit(Question $question)
     {
         $this->authorize('update', $question);
-        //abort(403, "Access denied. You can't edit a question from another user");
     
         return view('questions.edit', compact('question'));
     }
