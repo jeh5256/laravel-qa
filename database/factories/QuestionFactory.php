@@ -19,7 +19,7 @@ class QuestionFactory extends Factory
         return [
             'title' => $this->faker->words(3, true),
             'slug' => $this->faker->unique()->slug(),
-            'body' => $this->faker->paragraph(),
+            'body' => $this->faker->paragraph(3),
             'views' => $this->faker->randomDigit(),
             'answers_count' => $this->faker->randomDigit(),
             'vote_count' => $this->faker->randomDigit(),
