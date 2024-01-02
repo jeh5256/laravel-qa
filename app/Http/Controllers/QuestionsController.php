@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use Inertia\Response;
 use App\Models\Question;
-use App\Http\Requests\AskQuestionRequest;
+use Illuminate\Routing\Redirector;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Questions\CreateQuestionRequest;
+use App\Http\Requests\Questions\UpdateQuestionRequest;
 
 class QuestionsController extends Controller
 {
@@ -19,7 +23,7 @@ class QuestionsController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function index()
+    public function index(): Response
     {
         return Inertia::render('Questions/QuestionsIndex', [
             'questions' => Question::with('user')
@@ -32,9 +36,9 @@ class QuestionsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia Response
      */
-    public function create()
+    public function create(): Response
     {   
         return Inertia::render('Questions/QuestionsCreate', [
             'can' => [
@@ -46,10 +50,10 @@ class QuestionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\Questions\CreateQuestionRequest  $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function store(AskQuestionRequest $request)
+    public function store(CreateQuestionRequest $request): Redirector|RedirectResponse
     {
         $request->user()->questions()->create($request->only('title', 'body'));
 
@@ -59,10 +63,10 @@ class QuestionsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Question  $question
+     * @param  \App\Moodels\Question  $question
      * @return \Inertia\Response
      */
-    public function show(Question $question)
+    public function show(Question $question): Response
     {
         $question->increment('views');
 
@@ -83,26 +87,27 @@ class QuestionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
+     * @param  \App\Models\Question  $question
+     * @return \Inertia\Response
      */
-    public function edit(Question $question)
+    public function edit(Question $question): Response
     {
-        $this->authorize('update', $question);
-    
-        return view('questions.edit', compact('question'));
+        return Inertia::render('Questions/QuestionsEdit', [
+            'question' => $question,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\Questions\UpdateQuestionRequest $request
+     * @param  \App\Models\Question  $question
+     * @return \Illuminate\Http\Response|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function update(AskQuestionRequest $request, Question $question)
+    public function update(UpdateQuestionRequest $request, Question $question): Redirector|Response|RedirectResponse
     {
         $this->authorize('update', $question);
+
         $question->update($request->only('body', 'title'));
 
         if ($request->expectsJson()) {
@@ -118,13 +123,13 @@ class QuestionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
+     * @param  \App\Models\Question  $question
+     * @return \Illuminate\Http\Response|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function destroy(Question $question)
+    public function destroy(Question $question): Redirector|Response|RedirectResponse
     {
         $this->authorize('delete', $question);
-        //abort(403, "Access denied. You can't delete a question from another user");
+
         $question->delete();
 
         if (request()->expectsJson()) {
