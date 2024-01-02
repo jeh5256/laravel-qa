@@ -9,6 +9,7 @@ import { faStar, faArrowUp, faArrowDown, faCheck } from "@fortawesome/free-solid
 import { faStar as farStar} from '@fortawesome/free-regular-svg-icons';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import ToastPlugin from 'vue-toast-notification';
 
 library.add(faStar, farStar, faArrowUp, faArrowDown, faCheck);
 
@@ -21,6 +22,7 @@ createInertiaApp({
         return createApp({ render: () => h(app, props) })
             .use(plugin)
             .use(CKEditor)
+            .use(ToastPlugin)
             .component('font-awesome-icon', FontAwesomeIcon)
             .mixin({ methods: { route } })
             .mount(el);
