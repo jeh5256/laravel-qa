@@ -13,8 +13,8 @@
                         {{ question.title }}
                     </Link>
                     <Link 
-                        v-if="$page.props.auth.user.id === question.user_id"
-                        :href="`/questions/${props.question.slug}`" 
+                        v-if="canUserEdit"
+                        :href="`/questions/${props.question.slug}/edit`" 
                         class="text-xs pl-3 text-gray-600 hover:text-gray-400"
                     >
                         Edit
@@ -42,18 +42,13 @@
     import { computed } from 'vue';
     import { formatDistance } from 'date-fns';
     import { Inertia } from '@inertiajs/inertia';
-    import { Link } from '@inertiajs/inertia-vue3'
+    import { Link, usePage } from '@inertiajs/inertia-vue3'
     import { useToast } from 'vue-toast-notification';
     import Vote from '../Vote.vue';
 
     const $toast = useToast();
 
     const props = defineProps({
-        auth: {
-            type: Object,
-            required: false,
-            default: () => {}
-        },
         question: {
             type: Object,
             required: true
@@ -72,7 +67,12 @@
         return formatDistance(new Date(props.question.created_at), new Date(), { addSuffix: true });
     });
 
+    const canUserEdit = computed(() => user?.id === props.question.user_id);
+
     const hasUserFavorited = computed(() => {
         return props.question.is_favorited ? 'fa-solid fa-star' : 'fa-regular fa-star';
     });
+
+    const { ...user } = computed(() => usePage().props.value.auth.user).value;
+
 </script>
