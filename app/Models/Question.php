@@ -16,7 +16,7 @@ class Question extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'body'
+        'title', 'slug', 'body'
     ];
 
     protected $appends = [
@@ -27,10 +27,11 @@ class Question extends Model
         return $this->BelongsTo(User::class);
     }
 
-    public function setTitleAttribute($value) 
+    public function setSlugAttribute($value) 
     {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
+        $slug = !empty($value) ? $value : Str::slug($this->title);
+
+        $this->attributes['slug'] = $slug;
     }
 
     public function getStatusAttribute() 

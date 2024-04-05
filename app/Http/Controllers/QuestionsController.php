@@ -55,7 +55,7 @@ class QuestionsController extends Controller
      */
     public function store(CreateQuestionRequest $request): Redirector|RedirectResponse
     {
-        $request->user()->questions()->create($request->only('title', 'body'));
+        $request->user()->questions()->create($request->only('title', 'slug', 'body'));
 
         return redirect('/questions')->with('success', 'Your question has created');
     }
