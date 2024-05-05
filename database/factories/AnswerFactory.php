@@ -20,7 +20,7 @@ class AnswerFactory extends Factory
         return [
             'body' => $this->faker->sentence(3),
             'vote_count' => $this->faker->randomDigit(),
-            'user_id' => User::class
+            'user_id' => User::factory()->create()
         ];
     }
 }
