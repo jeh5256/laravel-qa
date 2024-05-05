@@ -31,8 +31,8 @@ class QuestionsTest extends TestCase
             'slug' => $question->slug,
             'body' => $question->body,
             'views' => 0,
-            'answers' => 0,
-            'best_answer' => null,
+            'answers_count' => 0,
+            'best_answer_id' => null,
             'user_id' => $user->id
         ]);
     }
