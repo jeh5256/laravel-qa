@@ -36,4 +36,48 @@ class QuestionsTest extends TestCase
             'user_id' => $user->id
         ]);
     }
+
+    /** @test */
+    public function must_be_authenicated_to_create_a_question()
+    {
+        $question = Question::factory()->make();
+
+        $this->json("POST", "/questions", [
+            'title' => $question->title,
+            'slug' => $question->slug,
+            'body' => $question->body
+        ])
+        ->assertStatus(401);
+    }
+
+    /** @test */
+    public function a_user_can_edit_their_question()
+    {
+        $this->actingAs($user = User::factory()->create());
+
+        $question = Question::factory(['user_id' => $user->id])->create();
+        $editedQuestion = Question::factory()->make();
+
+        $this->patch("/questions/{$question->slug}", [
+            'title' => $editedQuestion->title,
+            'slug' => $editedQuestion->slug,
+            'body' => $editedQuestion->body
+        ])
+        ->assertRedirect('questions')
+        ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('questions', [
+            'title' => $editedQuestion->title,
+            'slug' => $editedQuestion->slug,
+            'body' => $editedQuestion->body,
+            'user_id' => $user->id
+        ]);
+
+        $this->assertDatabaseMissing('questions', [
+            'title' => $question->title,
+            'slug' => $question->slug,
+            'body' => $question->body,
+            'user_id' => $user->id
+        ]);
+    }
 }
