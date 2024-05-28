@@ -9,6 +9,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Questions\CreateQuestionRequest;
 use App\Http\Requests\Questions\UpdateQuestionRequest;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class QuestionsController extends Controller
 {
@@ -104,11 +105,15 @@ class QuestionsController extends Controller
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateQuestionRequest $request, Question $question): Redirector|Response|RedirectResponse
+    public function update(UpdateQuestionRequest $request, Question $question): Redirector|Response|RedirectResponse|JsonResponse
     {
         $this->authorize('update', $question);
 
-        $question->update($request->only('body', 'title'));
+        $question->update([
+            'title' => $request->validated('title'),
+            'slug' => $request->validated('slug'),
+            'body' => $request->validated('body'),
+        ]);
 
         if ($request->expectsJson()) {
             return response()->json([
