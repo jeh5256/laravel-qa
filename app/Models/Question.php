@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Mews\Purifier\Facades\Purifier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Question extends Model
 {
@@ -16,25 +17,26 @@ class Question extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'slug', 'body'
+        'title', 'slug', 'body', 'user_id'
     ];
 
     protected $appends = [
         'created_date', 'is_favorited', 'favorites_count', 'body_html', 'user_voted'
     ];
 
-    public function user() {
+    public function user(): BelongsTo 
+    {
         return $this->BelongsTo(User::class);
     }
 
-    public function setSlugAttribute($value) 
+    public function setSlugAttribute($value): void 
     {
         $slug = !empty($value) ? $value : Str::slug($this->title);
 
         $this->attributes['slug'] = $slug;
     }
 
-    public function getStatusAttribute() 
+    public function getStatusAttribute(): string 
     {
         if ($this->answers_count > 0) {
             if ($this->best_answer_id) {
