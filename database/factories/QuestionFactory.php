@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,6 +24,7 @@ class QuestionFactory extends Factory
             'views' => $this->faker->randomDigit(),
             'answers_count' => $this->faker->randomDigit(),
             'vote_count' => $this->faker->randomDigit(),
+            'user_id' => User::factory()
         ];
     }
 }
