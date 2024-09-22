@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VoteQuestionRequest;
 use Illuminate\Http\Request;
 use App\Models\Question;
 
@@ -12,7 +13,7 @@ class VoteQuestionController extends Controller
         $this->middleware('auth');
     }
 
-    public function __invoke(Question $question, Request $request)
+    public function __invoke(Question $question, VoteQuestionRequest $request)
     {
         $vote = (int) $request->input('vote');
         $votesCount = auth()->user()->voteForQuestion($question, $vote);
