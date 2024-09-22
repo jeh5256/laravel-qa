@@ -33,7 +33,7 @@ class AnswersController extends Controller
             return response()->json([
                 'message' => 'Your answer has been submitted',
                 'answer' => $answer->load('user')
-            ]);
+            ], 201);
         }
            
         return back()->with('success', 'Your answer has been submitted');
