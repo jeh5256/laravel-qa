@@ -152,7 +152,7 @@ class QuestionsTest extends TestCase
     {
         $question = Question::factory(['vote_count' => 0])->create();
 
-        $res = $this->json("POST", "/questions/{$question->id}/vote", [
+        $this->json("POST", "/questions/{$question->id}/vote", [
             'vote' => -1
         ])
         ->assertStatus(200)
