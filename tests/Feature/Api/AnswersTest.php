@@ -203,6 +203,7 @@ class AnswersTest extends TestCase
 	public function a_user_can_mark_an_answer_as_best_answer()
 	{
 		$question = Question::factory([
+			'user_id' => $this->user->id,
 			'vote_count' => 0,
 			'best_answer_id' => null
 		])->create();
@@ -211,5 +212,29 @@ class AnswersTest extends TestCase
 			'question_id' => $question->id,
 			'vote_count' => 0
 		])->create();
+
+		$this->json("POST", "/answers/{$answer->id}/accept")
+			->assertStatus(200)
+			->assertJson([
+				'message' => 'Marked as best answer'
+			]);
+	}
+
+	/** @test */
+	public function a_user_cant_mark_an_answer_as_best_answer_if_they_didnt_ask_the_question()
+	{
+		$question = Question::factory([
+			'user_id' => 9999999,
+			'vote_count' => 0,
+			'best_answer_id' => null
+		])->create();
+
+		$answer = Answer::factory([
+			'question_id' => $question->id,
+			'vote_count' => 0
+		])->create();
+
+		$this->json("POST", "/answers/{$answer->id}/accept")
+			->assertStatus(403);
 	}
 }
