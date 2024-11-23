@@ -36,7 +36,7 @@
     import { formatDistance } from 'date-fns';
     import { Inertia } from '@inertiajs/inertia';
     import { useToast } from 'vue-toast-notification';
-    import Vote from '../Vote.vue';
+    import Vote from '../Vote';
 
     const $toast = useToast();
 
