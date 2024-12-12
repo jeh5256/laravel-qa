@@ -73,7 +73,7 @@
     import { useForm } from '@inertiajs/inertia-vue3';
     import { watch } from 'vue';
     import { useToast } from 'vue-toast-notification';
-    import ContentEditor from '@/components/Editor/ContentEditor.vue';
+    import ContentEditor from '../../components/Editor/ContentEditor';
 
     const $toast = useToast();
 

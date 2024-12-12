@@ -41679,7 +41679,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony import */ var vue_toast_notification__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-toast-notification */ "./node_modules/vue-toast-notification/dist/index.min.js");
 /* harmony import */ var vue_toast_notification__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_toast_notification__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _components_Editor_ContentEditor_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/components/Editor/ContentEditor.vue */ "./resources/js/components/Editor/ContentEditor.vue");
+/* harmony import */ var _components_Editor_ContentEditor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Editor/ContentEditor */ "./resources/js/components/Editor/ContentEditor.vue");
 
 
 
@@ -41766,7 +41766,7 @@ __webpack_require__.r(__webpack_exports__);
       useForm: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.useForm,
       watch: vue__WEBPACK_IMPORTED_MODULE_2__.watch,
       useToast: vue_toast_notification__WEBPACK_IMPORTED_MODULE_3__.useToast,
-      ContentEditor: _components_Editor_ContentEditor_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+      ContentEditor: _components_Editor_ContentEditor__WEBPACK_IMPORTED_MODULE_4__["default"]
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
