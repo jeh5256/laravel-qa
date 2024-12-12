@@ -1,95 +1,105 @@
 <template>
-    <div class="d-flex flex-column vote-controls">
-        <a 
-            :title="title('up')" 
-            class="up-vote" :class="classes"
+    <div 
+        class="mr-4 md:mr-8 font-bold flex items-center justify-center text-center flex-col"
+        :class="{
+            'text-green-700': props.voteCount >= 0,
+            'text-red-700': props.voteCount < 0
+        }"
+    >
+        <font-awesome-icon
+            icon="fa-solid fa-arrow-up" 
+            class="text-2xl mb-3 font-extrabold cursor-pointer" 
+            :class="{
+                'text-orange-400': !props.userUpvoted,
+                'text-orange-600' : props.userUpvoted
+            }"
+            transform="grow-5"
             @click.prevent="upVote"
-        >
-            <i class="fas fa-caret-up fa-3x"></i>
-        </a>
-        
-        <span class="votes-count">{{ count }}</span>
-        <a 
-            :title="title('down')" 
-            class="down-vote" :class="classes"
+        />
+        {{ voteCount }}
+        <font-awesome-icon
+            icon="fa-solid fa-arrow-up" 
+            class="text-2xl text-blue-400 mt-3 font-extrabold cursor-pointer" 
+            :class="{
+                'text-blue-400': !props.userDownVoted,
+                'text-blue-600' : props.userDownVoted
+            }"
+            transform="grow-5 rotate-180"
             @click.prevent="downVote"
-        >
-            <i class="fas fa-caret-down fa-3x"></i>
-        </a>
-        
-        <favorite v-if="name === 'question'" :question="model"></favorite>
-        <accept v-else :answer="model"></accept>
+        />
+        <slot></slot>
     </div>
 </template>
-<script>
-import Favorite from './Favorite';
-import Accept from './Accept';
 
-export default {
-    props: ['name', 'model'],
-    components: {
-        Favorite,
-        Accept
-    },
-    computed: {
-        classes() {
-            return this.signedIn ? '' : '';
+<script setup>
+   import { Inertia } from '@inertiajs/inertia';
+   import { useToast } from 'vue-toast-notification';
+   import { computed } from 'vue';
+
+   const $toast = useToast();
+
+    const props = defineProps({
+        voteCount: {
+            type: Number,
+            required: true,
         },
-        endpoint() {
-            return `/${this.name}s/${this.id}/vote`;
-        }
-    },
-    data() {
-        return {
-            count: this.model.vote_count || 0,
-            id: this.model.id
-        }
-    },
-    methods: {
-        _vote(vote) {
-
-            if (!this.signedIn) {
-                this.$toast.warning(`Please login to vote for this ${this.name}`, 'Warning', {
-                    timeout: 5000,
-                    position: 'bottomLeft'
-                });
-
-                return;
+        model: {
+            type: String,
+            required: true,
+            validator(value) {
+                return ['questions', 'answers'].includes(value);
             }
-
-            axios.post(this.endpoint, { vote })
-            .then((res) => {
-
-                if (this.count != res.data.votesCount) {
-                    this.$toast.success(res.data.message, 'Success', {
-                    timeout: 5000,
-                    position: 'bottomLeft'
-                    });
-                }
-                
-                this.count = res.data.votesCount;
-            })
-            .catch((err) => {
-                this.$toast.error('Vote failed', 'Error', {
-                    timeout: 5000,
-                    position: 'bottomLeft'
-                });
-            });
         },
-        downVote() {
-            this._vote(-1);
+        modelId: {
+            type: Number,
+            required: true
         },
-        upVote() {
-            this._vote(1);
-        },
-        title(voteType) {
-            let titles = {
-                up: `This ${this.name} is useful`,
-                down: `This ${this.name} is not useful`
-            };
-
-            return titles[voteType];
+        userVoted: {
+            type: Boolean,
+            default() {
+                return false;
+            }
         }
-    },
-}
+    });
+
+    const _vote = vote => {
+        if (!canVote.value) {
+            return $toast.error('You must be logged in to vote');
+        };
+
+        Inertia.post(url.value, {
+            vote
+        }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                const voteText = vote === -1  ? 'downvoted' : 'upvoted';
+                $toast.success(`Successfully ${voteText} answer`);
+            },
+            onError: () => $toast.error('Something went wrong')
+        });
+    };
+
+    const upVote = () => {
+        _vote(1);
+    };
+
+    const downVote = () => {
+        _vote(-1);
+    };
+
+    const canVote = computed(() => {
+        return  Inertia.page?.props?.auth?.user ? true : false;
+    });
+
+    const url = computed(() => {
+        return `/${props.model}/${props.modelId}/vote`;
+    });
+
+    const userUpvoted = computed(() => {
+        return props.userVoted === 'upvoted';
+    });
+
+     const userDownVoted = computed(() => {
+        return props.userVoted === 'downvoted'
+    });
 </script>
