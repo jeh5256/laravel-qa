@@ -46,6 +46,7 @@
                         <AnswerItem 
                             v-for="answer in answers" 
                             :answer="answer"
+                            :questionId="question.id"
                             :key="answer.id" 
                             :canUserMarkAsBestAnswer="can?.markAsBestAnswer"
                         />

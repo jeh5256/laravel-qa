@@ -19,11 +19,30 @@
             />
        </Vote>
         <div class="w-3/4 md:w-full over">
+            <div v-show="canEditAnswer">
+                <span @click="editingAnswer" class="text-sm">(Edit)</span>
+            </div>
             <div 
-                v-html="answer.body"
-                class="pt-5 bg-gray-200 p-4 mt-5 rounded-md text-ellipsis overflow-hidden"
+                v-if="!isEditingAnswer"
+                v-html="answerText"
+                class="pt-5 bg-gray-200 p-4 mt-2 rounded-md text-ellipsis overflow-hidden"
             >
             </div>
+           <div v-else>
+                <ckeditor 
+                    :editor="ClassicEditor" 
+                    v-model="answerText" 
+                    :config="ckeditorConfig"
+                >
+                </ckeditor>
+                <button 
+                    type="submit" 
+                    class="px-2 py-1 bg-green-600 mt-3 rounded-md text-white font-bold"
+                    @click="updateAnswer"
+                >
+                    Save Answer
+                </button>
+           </div>
             <div class="mt-2 text-sm">
                 Answered by {{ answer.user.name }} at {{ askedAt }}
             </div>
@@ -32,11 +51,16 @@
 </template>
 
 <script setup>
-    import { computed } from 'vue';
+    import { computed, ref } from 'vue';
     import { formatDistance } from 'date-fns';
     import { Inertia } from '@inertiajs/inertia';
+    import { usePage } from '@inertiajs/inertia-vue3'
     import { useToast } from 'vue-toast-notification';
     import Vote from '../Vote';
+    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+    const isEditingAnswer = ref(false);
+    const answerText = ref(props.answer.body);
 
     const $toast = useToast();
 
@@ -45,6 +69,10 @@
             required: true,
             type: Object
         },
+        'questionId': {
+            required: true,
+            type: Number
+        },
         canUserMarkAsBestAnswer: {
             require: false,
             default: false,
@@ -52,12 +80,30 @@
         }
     });
 
+    const { ...user } = computed(() => usePage().props.value.auth.user).value;
+
     const favoriteAnswer = () => {
         Inertia.post(`/answers/${props.answer.id}/accept`,{}, {
             preserveScroll: true,
             onSuccess: () => $toast.success('Answer (un)marked as best answer'),
             onError: () => $toast.success('Something went wrong')
-        })
+        });
+    };
+
+    const editingAnswer = () => {
+        isEditingAnswer.value = !isEditingAnswer.value;
+    }
+
+    const updateAnswer = () => {
+        Inertia.patch(`/questions/${props.questionId}/answers/${props.answer.id}`, {
+            body: answerText.value
+        }, 
+        {
+            preserveScroll: true,
+            onSuccess: () => $toast.success('Answer has been updated'),
+            onError: () => $toast.success('Something went wrong'),
+            onFinish: () => isEditingAnswer.value = false
+        });
     };
 
     const askedAt = computed(() => {
@@ -74,5 +120,9 @@
 
     const votesText = computed(() => {
         return props.answer.votes_count > 1 ? 'Votes' : 'Vote';
+    });
+
+    const canEditAnswer = computed(() => {
+        return user?.id === props.answer.user_id;
     });
 </script>
