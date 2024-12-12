@@ -35,7 +35,7 @@
                             </div>
                             <div class="py-4 flex flex-col">
                                 <label for="body" class="font-bold">Body</label>
-                                <ckeditor :editor="ClassicEditor" v-model="form.body" :config="ckeditorConfig" class="py-4 min-h-[300px]" id="body"></ckeditor>
+                                <content-editor :content="form.body" class="py-4 min-h-[300px]" id="body"/>
                                 <span 
                                     v-if="errors?.body"
                                     class="text-sm text-red-600 font-bold"
@@ -68,12 +68,12 @@
 </template>
 
 <script setup>
-    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated';
     import { Head } from '@inertiajs/inertia-vue3';
-    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import { useForm } from '@inertiajs/inertia-vue3';
     import { watch } from 'vue';
     import { useToast } from 'vue-toast-notification';
+    import ContentEditor from '@/components/Editor/ContentEditor.vue';
 
     const $toast = useToast();
 

@@ -29,12 +29,7 @@
             >
             </div>
            <div v-else>
-                <ckeditor 
-                    :editor="ClassicEditor" 
-                    v-model="answerText" 
-                    :config="ckeditorConfig"
-                >
-                </ckeditor>
+                <content-editor :content="answerText" />
                 <button 
                     type="submit" 
                     class="px-2 py-1 bg-green-600 mt-3 rounded-md text-white font-bold"
@@ -57,7 +52,7 @@
     import { usePage } from '@inertiajs/inertia-vue3'
     import { useToast } from 'vue-toast-notification';
     import Vote from '../Vote';
-    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+    import ContentEditor from '../Editor/ContentEditor';
 
     const isEditingAnswer = ref(false);
     const answerText = ref(props.answer.body);

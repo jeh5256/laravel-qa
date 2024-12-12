@@ -26,7 +26,7 @@
                                 >
                                     {{ errors.body }}
                                 </span>
-                                <ckeditor :editor="ClassicEditor" v-model="answerText" :config="ckeditorConfig"></ckeditor>
+                                <content-editor :content="answerText" />
                             </div>
                             <button 
                                 type="submit" 
@@ -58,12 +58,12 @@
 </template>
 
 <script setup>
-    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-    import QuestionItem from '../../Components/Questions/QuestionItem.vue';
-    import AnswerItem from '../../Components/Answers/AnswerItem.vue';
+    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated';
+    import QuestionItem from '../../Components/Questions/QuestionItem';
+    import AnswerItem from '../../Components/Answers/AnswerItem';
     import { computed, ref } from 'vue';
     import { Inertia } from '@inertiajs/inertia';
-    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+    import ContentEditor from '../../components/Editor/ContentEditor';
 
     const props = defineProps({
         'question': {
