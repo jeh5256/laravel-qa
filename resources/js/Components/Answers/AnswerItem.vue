@@ -52,7 +52,7 @@
     import { usePage } from '@inertiajs/inertia-vue3'
     import { useToast } from 'vue-toast-notification';
     import Vote from '../Vote';
-    import ContentEditor from '../Editor/ContentEditor';
+    import ContentEditor from '../../components/Editor/ContentEditor';
 
     const isEditingAnswer = ref(false);
     const answerText = ref(props.answer.body);
