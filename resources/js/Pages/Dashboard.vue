@@ -20,10 +20,10 @@
 </template>
 
 <script setup>
-    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated';
     import { Head } from '@inertiajs/inertia-vue3';
-    import DashboardItem from '@/Components/Dashboard/DashboardItem.vue';
-    import DashboardQA from '@/Components/Dashboard/DashboardQA.vue';
+    import DashboardItem from '@/Components/Dashboard/DashboardItem';
+    import DashboardQA from '@/Components/Dashboard/DashboardQA';
 
     defineProps({
         questions: {

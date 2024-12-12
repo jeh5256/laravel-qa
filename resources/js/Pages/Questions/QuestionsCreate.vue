@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated';
     import { Head } from '@inertiajs/inertia-vue3';
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import { useForm } from '@inertiajs/inertia-vue3';

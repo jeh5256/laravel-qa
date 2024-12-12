@@ -44,7 +44,7 @@
     import { Inertia } from '@inertiajs/inertia';
     import { Link, usePage } from '@inertiajs/inertia-vue3';
     import { useToast } from 'vue-toast-notification';
-    import Vote from '../Vote.vue';
+    import Vote from '../Vote';
 
     const $toast = useToast();
 
