@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-    import { defineProps, ref } from 'vue';
+    import { defineProps, ref, watch } from 'vue';
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
     const props = defineProps({
@@ -17,8 +17,22 @@
             type: String
         }
     });
+  
+    const emit = defineEmits(['editorUpdate']);
 
     const body = ref(props.content);
+ 
+    watch(body, (newBody) => {
+        if (newBody !== '') {
+            emit('editorUpdate', newBody);
+        }
+    });
+
+    watch(() => props.content, (newContent) => {
+        if (newContent === '') {
+            body.value = newContent;
+        }
+    });
 
     const ckeditorConfig = {
             toolbar: {
@@ -44,3 +58,9 @@
             language: 'en'
         };
 </script>
+
+<style>
+    .ck-editor__editable {
+        min-height: 250px;
+    }
+</style>
