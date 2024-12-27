@@ -35,7 +35,12 @@
                             </div>
                             <div class="py-4 flex flex-col">
                                 <label for="body" class="font-bold">Body</label>
-                                <content-editor :content="form.body" class="py-4 min-h-[300px]" id="body"/>
+                                <content-editor 
+                                    :content="form.body" 
+                                    class="py-4 min-h-[300px]" 
+                                    id="body"
+                                    @editor-update="(body) => form.body = body"
+                                />
                                 <span 
                                     v-if="errors?.body"
                                     class="text-sm text-red-600 font-bold"
@@ -94,31 +99,6 @@
         body: props.question.body
     });
 
-    const ckeditorConfig = {
-        toolbar: {
-            items: [
-                'heading',
-                '|',
-                'bold',
-                'italic',
-                '|',
-                'bulletedList',
-                'numberedList',
-                '|',
-                'insertTable',
-                '|',
-                '|',
-                'undo',
-                'redo'
-            ]
-        },
-        table: {
-            contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
-        },
-        language: 'en'
-    };
-
-
     const updateQuestion = () => {
         form.patch(`/questions/${props.question.slug}`, {
             titLe: form.title,
@@ -149,9 +129,3 @@
         }
     );
 </script>
-
-<style>
-    .ck-editor__editable {
-        min-height: 250px;
-    }
-</style>

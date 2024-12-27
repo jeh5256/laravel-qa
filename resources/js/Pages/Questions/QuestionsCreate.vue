@@ -14,7 +14,7 @@
                     <div class="p-6 bg-white border-b border-gray-200 flex flex-col">
                         <form @submit.prevent="create">
                             <div class="py-4 flex flex-col">
-                                <label for="title" class="font-bold">Title</label>
+                                <label for="title" class="font-bold mb-1">Title</label>
                                 <input type="text" v-model="form.title" class="w-full" id="title" />
                                 <span 
                                     v-if="errors?.title"
@@ -24,7 +24,7 @@
                                 </span>
                             </div>
                             <div class="py-4 flex flex-col">
-                                <label for="slug" class="font-bold">slug</label>
+                                <label for="slug" class="font-bold mb-1">Slug</label>
                                 <input type="text" v-model="form.slug" class="w-full" id="slug" />
                                 <span 
                                     v-if="errors?.slug"
@@ -34,8 +34,13 @@
                                 </span>
                             </div>
                             <div class="py-4 flex flex-col">
-                                <label for="body" class="font-bold">Body</label>
-                                <ckeditor :editor="ClassicEditor" v-model="form.body" :config="ckeditorConfig" class="py-4 min-h-[300px]" id="body"></ckeditor>
+                                <label for="body" class="font-bold mb-1">Body</label>
+                                <content-editor 
+                                    :content="form.body" 
+                                    class="py-4 min-h-[300px]" 
+                                    id="body" 
+                                    @editor-update="(body) => form.body = body"
+                                />
                                 <span 
                                     v-if="errors?.body"
                                     class="text-sm text-red-600 font-bold"
@@ -61,9 +66,9 @@
 <script setup>
     import BreezeAuthenticatedLayout from '@/Layouts/Authenticated';
     import { Head } from '@inertiajs/inertia-vue3';
-    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import { useForm } from '@inertiajs/inertia-vue3';
     import { watch } from 'vue';
+    import ContentEditor from '@/components/Editor/ContentEditor.vue';
 
     const props = defineProps({
         'errors': {
@@ -78,38 +83,14 @@
         body: ''
     });
 
-    const ckeditorConfig = {
-        toolbar: {
-            items: [
-                'heading',
-                '|',
-                'bold',
-                'italic',
-                '|',
-                'bulletedList',
-                'numberedList',
-                '|',
-                'insertTable',
-                '|',
-                '|',
-                'undo',
-                'redo'
-            ]
-        },
-        table: {
-            contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
-        },
-        language: 'en'
-    };
-
-
     const create = () => {
         form.post('/questions', {
             titLe: form.title,
             body: form.body
         }, {
             preserveScroll: true,
-            onSuccess: page => {console.log(page)},
+            onSuccess: page => { $toast.success('Question created') },
+            onerror: page => { $toast.error('Error creating question') }
         });
     };
     
