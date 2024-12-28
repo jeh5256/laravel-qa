@@ -26,7 +26,7 @@ class UpdateQuestionRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'slug' => ['required', Rule::unique('questions', 'slug')->ignore($this->slug)],
+            'slug' => ['required', Rule::unique('questions', 'slug')->ignore($this->question->id)],
             'body' => 'required'
         ];
     }
