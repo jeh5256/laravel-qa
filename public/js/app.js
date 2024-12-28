@@ -41647,9 +41647,6 @@ __webpack_require__.r(__webpack_exports__);
 
     var updateQuestion = function updateQuestion() {
       form.patch("/questions/".concat(props.question.slug), {
-        titLe: form.title,
-        body: form.body
-      }, {
         preserveScroll: true,
         onSuccess: function onSuccess(page) {
           $toast.success('Question updated');
@@ -41914,9 +41911,7 @@ __webpack_require__.r(__webpack_exports__);
     var props = __props;
     var body = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(props.content);
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(body, function (newBody) {
-      if (newBody !== '') {
-        emit('editorUpdate', newBody);
-      }
+      emit('editorUpdate', newBody);
     });
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(function () {
       return props.content;

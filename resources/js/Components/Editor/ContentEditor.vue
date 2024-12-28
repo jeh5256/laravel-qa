@@ -23,9 +23,7 @@
     const body = ref(props.content);
  
     watch(body, (newBody) => {
-        if (newBody !== '') {
-            emit('editorUpdate', newBody);
-        }
+        emit('editorUpdate', newBody);
     });
 
     watch(() => props.content, (newContent) => {
