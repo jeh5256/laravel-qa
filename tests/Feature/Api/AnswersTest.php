@@ -223,8 +223,10 @@ class AnswersTest extends TestCase
 	/** @test */
 	public function a_user_cant_mark_an_answer_as_best_answer_if_they_didnt_ask_the_question()
 	{
+		$otherUser = User::factory(['id' => 999999])->create();
+
 		$question = Question::factory([
-			'user_id' => 9999999,
+			'user_id' => $otherUser->id,
 			'vote_count' => 0,
 			'best_answer_id' => null
 		])->create();
