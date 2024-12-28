@@ -101,9 +101,6 @@
 
     const updateQuestion = () => {
         form.patch(`/questions/${props.question.slug}`, {
-            titLe: form.title,
-            body: form.body
-        }, {
             preserveScroll: true,
             onSuccess: page => { $toast.success('Question updated') },
             onerror: page => { $toast.error('Error updating question') }
