@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Inertia;
+namespace Tests\Feature\Inertia\Questions;
 
 use App\Models\Answer;
 use Tests\TestCase;
