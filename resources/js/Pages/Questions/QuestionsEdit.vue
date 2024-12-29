@@ -73,12 +73,11 @@
 </template>
 
 <script setup>
-    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated';
-    import { Head } from '@inertiajs/inertia-vue3';
-    import { useForm } from '@inertiajs/inertia-vue3';
+    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+    import { Head, useForm } from '@inertiajs/vue3';
     import { watch } from 'vue';
     import { useToast } from 'vue-toast-notification';
-    import ContentEditor from '../../components/Editor/ContentEditor';
+    import ContentEditor from '@/Components/Editor/ContentEditor.vue';
 
     const $toast = useToast();
 

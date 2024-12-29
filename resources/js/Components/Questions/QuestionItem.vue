@@ -41,10 +41,9 @@
 <script setup>
     import { computed } from 'vue';
     import { formatDistance } from 'date-fns';
-    import { Inertia } from '@inertiajs/inertia';
-    import { Link, usePage } from '@inertiajs/inertia-vue3';
+    import { Link, usePage, router } from '@inertiajs/vue3';
     import { useToast } from 'vue-toast-notification';
-    import Vote from '../Vote';
+    import Vote from '@/Components/Vote.vue';
 
     const $toast = useToast();
 
@@ -56,7 +55,7 @@
     });
 
     const favoriteQuestion = () => {
-        Inertia.post(`/questions/${props.question.id}/favorites`,{}, {
+        router.post(`/questions/${props.question.id}/favorites`,{}, {
             preserveScroll: true,
             onSuccess: () => $toast.success(`Successfully (un)favorited questionh`),
             onError: () => $toast.success('Something went wrong')
@@ -73,6 +72,6 @@
         return props.question.is_favorited ? 'fa-solid fa-star' : 'fa-regular fa-star';
     });
 
-    const { ...user } = computed(() => usePage().props.value.auth.user).value;
+    const { ...user } = computed(() => usePage().props?.auth.user);
 
 </script>

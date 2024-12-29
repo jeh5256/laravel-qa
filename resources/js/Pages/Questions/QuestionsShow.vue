@@ -63,12 +63,12 @@
 </template>
 
 <script setup>
-    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated';
-    import QuestionItem from '../../Components/Questions/QuestionItem';
-    import AnswerItem from '../../Components/Answers/AnswerItem';
-    import { computed} from 'vue';
-    import ContentEditor from '../../components/Editor/ContentEditor';
-    import { useForm } from '@inertiajs/inertia-vue3';
+    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+    import QuestionItem from '@/Components/Questions/QuestionItem.vue';
+    import AnswerItem from '@/Components/Answers/AnswerItem.vue';
+    import { computed } from 'vue';
+    import ContentEditor from '@/Components/Editor/ContentEditor.vue';
+    import { useForm } from '@inertiajs/vue3';
     import { useToast } from 'vue-toast-notification';
 
     const props = defineProps({

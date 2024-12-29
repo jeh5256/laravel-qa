@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-   import { Inertia } from '@inertiajs/inertia';
+   import { router, usePage  } from '@inertiajs/vue3';
    import { useToast } from 'vue-toast-notification';
    import { computed } from 'vue';
 
@@ -67,7 +67,7 @@
             return $toast.error('You must be logged in to vote');
         };
 
-        Inertia.post(url.value, {
+        router.post(url.value, {
             vote
         }, {
             preserveScroll: true,
@@ -88,7 +88,8 @@
     };
 
     const canVote = computed(() => {
-        return  Inertia.page?.props?.auth?.user ? true : false;
+        console.log(usePage())
+        return  usePage().props?.auth?.user ? true : false;
     });
 
     const url = computed(() => {

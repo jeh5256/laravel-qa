@@ -48,11 +48,10 @@
 <script setup>
     import { computed, ref } from 'vue';
     import { formatDistance } from 'date-fns';
-    import { Inertia } from '@inertiajs/inertia';
-    import { usePage } from '@inertiajs/inertia-vue3'
+    import { router, usePage } from '@inertiajs/vue3';
     import { useToast } from 'vue-toast-notification';
-    import Vote from '../Vote';
-    import ContentEditor from '../../components/Editor/ContentEditor';
+    import Vote from '@/Components/Vote.vue';
+    import ContentEditor from '@/Components/Editor/ContentEditor.vue';
 
     const isEditingAnswer = ref(false);
     const answerText = ref(props.answer.body);
@@ -75,10 +74,10 @@
         }
     });
 
-    const { ...user } = computed(() => usePage().props.value.auth.user).value;
+    const { ...user } = computed(() => usePage().props.auth.user).value;
 
     const favoriteAnswer = () => {
-        Inertia.post(`/answers/${props.answer.id}/accept`,{}, {
+        router.post(`/answers/${props.answer.id}/accept`,{}, {
             preserveScroll: true,
             onSuccess: () => $toast.success('Answer (un)marked as best answer'),
             onError: () => $toast.success('Something went wrong')

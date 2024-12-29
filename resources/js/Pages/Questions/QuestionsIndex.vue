@@ -26,9 +26,9 @@
 </template>
 
 <script setup>
-    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated';
-    import { Head } from '@inertiajs/inertia-vue3';
-    import QuestionItem from "../../Components/Questions/QuestionItem"
+    import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+    import { Head } from '@inertiajs/vue3';
+    import QuestionItem from "@/Components/Questions/QuestionItem.vue"
 
     defineProps({
         'questions': {
