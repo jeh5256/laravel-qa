@@ -88,7 +88,6 @@
     };
 
     const canVote = computed(() => {
-        console.log(usePage())
         return  usePage().props?.auth?.user ? true : false;
     });
 
@@ -101,6 +100,6 @@
     });
 
      const userDownVoted = computed(() => {
-        return props.userVoted === 'downvoted'
+        return props.userVoted === 'downvoted';
     });
 </script>
