@@ -14,7 +14,7 @@
                     <div class="p-6 bg-white border-b border-gray-200 flex flex-col">
                         <form @submit.prevent="create">
                             <div class="py-4 flex flex-col">
-                                <label for="title" class="font-bold mb-1">Title</label>
+                                <label for="title" class="font-semibold mb-1">Title</label>
                                 <input type="text" v-model="form.title" class="w-full" id="title" />
                                 <span 
                                     v-if="errors?.title"
@@ -24,7 +24,7 @@
                                 </span>
                             </div>
                             <div class="py-4 flex flex-col">
-                                <label for="slug" class="font-bold mb-1">Slug</label>
+                                <label for="slug" class="font-semibold mb-1">Slug</label>
                                 <input type="text" v-model="form.slug" class="w-full" id="slug" />
                                 <span 
                                     v-if="errors?.slug"
@@ -34,7 +34,7 @@
                                 </span>
                             </div>
                             <div class="py-4 flex flex-col">
-                                <label for="body" class="font-bold mb-1">Body</label>
+                                <label for="body" class="font-semibold mb-1">Body</label>
                                 <content-editor 
                                     :content="form.body" 
                                     class="py-4 min-h-[300px]" 
