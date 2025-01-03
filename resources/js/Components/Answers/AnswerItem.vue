@@ -53,9 +53,6 @@
     import Vote from '@/Components/Vote.vue';
     import ContentEditor from '@/Components/Editor/ContentEditor.vue';
 
-    const isEditingAnswer = ref(false);
-    const answerText = ref(props.answer.body);
-
     const $toast = useToast();
 
     const props = defineProps({
@@ -74,7 +71,9 @@
         }
     });
 
-    const { ...user } = computed(() => usePage().props.auth.user).value;
+    const isEditingAnswer = ref(false);
+    const answerText = ref(props.answer.body);
+    const user = computed(() => usePage().props.auth.user);
 
     const favoriteAnswer = () => {
         router.post(`/answers/${props.answer.id}/accept`,{}, {
