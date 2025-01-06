@@ -21,6 +21,7 @@ use App\Http\Controllers\VoteQuestionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+require __DIR__.'/auth.php';
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -31,25 +32,49 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', DashboarController::class)
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function() {
+    Route::get('/dashboard', DashboarController::class)
+        ->name('dashboard');
 
-require __DIR__.'/auth.php';
+    Route::post('/answers/{answer}/accept', AcceptAnswerController::class)
+        ->name('answers.accept');
 
-Route::resource('questions', QuestionsController::class)
-    ->names([
-        'index' => 'questions.index',
-        'show' => 'questions.show'
-    ])
-    ->parameters([
-        'questions' => 'question:slug'
-    ]);
+    Route::post('/questions/{question}/favorites', FavoritesController::class)
+        ->name('questions.favorite');
 
-Route::post('/questions/{question}/vote', VoteQuestionController::class)->name('questions.upvote');
-Route::post('/questions/{question}/favorites', FavoritesController::class)->name('questions.favorite');
+    Route::get('/questions/create', [QuestionsController::class, 'create'])
+        ->name('questions.create');
 
-Route::resource('questions.answers', AnswersController::class)->except(['index', 'create', 'show']);
+    Route::post('/questions', [QuestionsController::class, 'store'])
+        ->name('questions.store');
 
-Route::post('/answers/{answer}/accept', AcceptAnswerController::class)->name('answers.accept');
-Route::post('/answers/{answer}/vote', VoteAnswerController::class);
+    Route::get('/questions/{question:slug}/edit', [QuestionsController::class, 'edit'])
+        ->name('questions.edit');
+
+    Route::patch('/questions/{question:slug}', [QuestionsController::class, 'update'])
+        ->name('questions.update');
+
+    Route::delete('/questions/{question:slug}', [QuestionsController::class, 'delete'])
+        ->name('questions.delete');
+
+    Route::post('/answers/{answer}/vote', VoteAnswerController::class)
+        ->name('answers.vote');
+
+    Route::post('/questions/{question}/vote', VoteQuestionController::class)
+        ->name('questions.upvote');
+
+    Route::post('/questions/{question}/answers', [AnswersController::class, 'store'])
+        ->name('questions.answers.store');
+
+    Route::patch('/questions/{question}/answers/{answer}', [AnswersController::class, 'update'])
+        ->name('questions.answers.update');
+
+    Route::delete('/questions/{question}/answers/{answer', [AnswersController::class, 'delete'])
+        ->name('questions.answers.delete');
+});
+
+Route::get('/questions', [QuestionsController::class, 'index'])
+    ->name('questions.index');
+
+Route::get('/questions/{question:slug}', [QuestionsController::class, 'show'])
+    ->name('questions.show');

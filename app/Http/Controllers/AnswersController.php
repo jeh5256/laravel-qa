@@ -3,26 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AnswerRequest;
+use App\Http\Requests\UpdateAnswerRequest;
 use App\Models\Answer;
 use App\Models\Question;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class AnswersController extends Controller
-{
-
-    public function __construct() 
-    {
-        $this->middleware('auth')->except('index');       
-    }
-    
+{    
     /**
      * Store a newly created resource in storage.
      *
      * @param \App\Models\Question
      * @param  \Illuminate\Http\Request  $request
-     * @return \App\Http\Requests\AnswerRequest;
+     * @return \App\Http\Requests\RedirectResponse||\Illuminate\Http\JsonResponse;
      */
-    public function store(Question $question, AnswerRequest $request)
+    public function store(Question $question, AnswerRequest $request): RedirectResponse|JsonResponse
     {   
         $answer = $question->answers()->create([
             'body' => $request->body,
@@ -40,32 +36,24 @@ class AnswersController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Answer  $answer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Question $question, Answer $answer)
-    {
-        $this->authorize('update', $answer);
-
-        return view('answers.edit', compact('question', 'answer'));
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Answer  $answer
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\UpdateAnswerRequest  $request
+     * @param  \App\Models\Answer  $answer
+     * @param  \App\Models\Question $question
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Question $question, Answer $answer)
+    public function update(
+        UpdateAnswerRequest $request, 
+        Question $question, 
+        Answer $answer
+    ): RedirectResponse|JsonResponse
     {
         $this->authorize('update', $answer);
 
-        $answer->update($request->validate([
-            'body' => 'required'
-        ]));
+        $answer->update(
+            $request->validated('body')
+        );
         
         if ($request->expectsJson()) {
             return response()->json([
@@ -83,9 +71,9 @@ class AnswersController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Answer  $answer
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function destroy(Answer $answer)
+    public function destroy(Answer $answer): RedirectResponse|JsonResponse
     {
         $this->authorize('delete', $answer);
         $answer->delete();

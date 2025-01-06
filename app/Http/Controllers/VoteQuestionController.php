@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VoteQuestionRequest;
-use Illuminate\Http\Request;
 use App\Models\Question;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class VoteQuestionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    public function __invoke(Question $question, VoteQuestionRequest $request)
+    public function __invoke(Question $question, VoteQuestionRequest $request): RedirectResponse|JsonResponse
     {
         $vote = (int) $request->input('vote');
         $votesCount = auth()->user()->voteForQuestion($question, $vote);
