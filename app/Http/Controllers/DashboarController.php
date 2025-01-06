@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-
+use Inertia\Response;
 
 class DashboarController extends Controller
 {
 
-    public function __invoke()
+    public function __invoke(): Response
     {
         return Inertia::render('Dashboard', [
             'questions' => auth()
