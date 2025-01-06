@@ -13,12 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class QuestionsController extends Controller
 {
-
-    public function __construct() 
-    {
-        $this->middleware('auth', ['except' => ['index', 'show']]);       
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -41,11 +35,7 @@ class QuestionsController extends Controller
      */
     public function create(): Response
     {   
-        return Inertia::render('Questions/QuestionsCreate', [
-            'can' => [
-                'addQuestion' => auth()->id() ?? false
-            ]
-        ]);
+        return Inertia::render('Questions/QuestionsCreate');
     }
 
     /**
