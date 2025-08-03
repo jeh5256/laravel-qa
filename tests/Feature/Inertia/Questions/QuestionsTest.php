@@ -53,7 +53,7 @@ class QuestionsTest extends TestCase
                                 ->where('data.2.id', $question3->id)
                                 ->where('data.2.title', $question3->title)
                                 ->where('data.2.slug', $question3->slug)
-                                ->has('current_page')
+                                ->has('meta.current_page')
                                 ->etc();
                         }
                     )
