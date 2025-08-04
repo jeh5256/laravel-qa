@@ -6,11 +6,20 @@ use App\Models\User;
 use App\Models\Answer;
 use App\Models\VoteTrait;
 use Illuminate\Support\Str;
-use Mews\Purifier\Facades\Purifier;
+use Mews\Purifier\Casts\CleanHtml;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @property bool $is_favorited
+ * @property int $answer_count
+ * @proerty int $user_id
+ * @property-read User $questionFavorites
+ * @property-read mixed $body_html
+ * @property-read mixed $is_favorited
+ */
 class Question extends Model
 {
     use VoteTrait;
@@ -20,8 +29,8 @@ class Question extends Model
         'title', 'slug', 'body', 'user_id'
     ];
 
-    protected $appends = [
-        'created_date', 'is_favorited', 'favorites_count', 'body_html', 'user_voted'
+    protected $casts = [
+        'body' => CleanHtml::class
     ];
 
     public function user(): BelongsTo 
@@ -49,7 +58,7 @@ class Question extends Model
         }
     }
 
-    public function getUrlAttribute() 
+    public function getUrlAttribute(): string 
     {
         return route('questions.show', $this->slug);
     }
@@ -57,11 +66,6 @@ class Question extends Model
     public function getCreatedDateAttribute() 
     {
         return $this->created_at->diffForHumans();
-    }
-
-    public function getBodyHtmlAttribute() 
-    {
-        return clean($this->bodyHtml());
     }
 
     public function answers()
@@ -78,12 +82,12 @@ class Question extends Model
         $this->save();
     }
 
-    public function questionFavorites()
+    public function questionFavorites(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'question_favorites')->withTimestamps();
     }
 
-    public function isFavorited()
+    public function isFavorited(): bool
     {
         return $this->questionFavorites()->where('user_id', auth()->id())->count() > 0;
     }
@@ -123,13 +127,8 @@ class Question extends Model
         return $this->excerpt(250);
     }
 
-    public function excerpt($length=250)
+    public function excerpt(int $length=250)
     {
-        return Str::limit(strip_tags($this->bodyHtml()), $length);
-    }
-
-    private function bodyHtml()
-    {
-        return Purifier::clean($this->body);
+        return Str::limit($this->body, $length);
     }
 }

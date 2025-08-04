@@ -98,11 +98,12 @@ class QuestionsTest extends TestCase
                     ->has(
                         'question',
                         function(Assert $page) use($question) {
+            
                             return $page->where('id', $question->id)
                                 ->where('title', $question->title)
                                 ->where('slug', $question->slug)
                                 ->where('user_id', $this->user->id)
-                                ->where('body_html', $question->body_html)
+                                ->where('body', $question->body)
                                 ->etc();
                         }
                     )
