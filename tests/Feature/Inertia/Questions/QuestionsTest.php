@@ -98,11 +98,10 @@ class QuestionsTest extends TestCase
                     ->has(
                         'question',
                         function(Assert $page) use($question) {
-            
                             return $page->where('id', $question->id)
                                 ->where('title', $question->title)
                                 ->where('slug', $question->slug)
-                                ->where('user_id', $this->user->id)
+                                ->where('user.id', $this->user->id)
                                 ->where('body', $question->body)
                                 ->etc();
                         }
@@ -111,7 +110,6 @@ class QuestionsTest extends TestCase
                         'answers',
                         function(Assert $page) use($answer) {
                             return $page->where('0.id', $answer->id)
-                                ->where('0.question_id', $answer->question_id)
                                 ->where('0.body', $answer->body);
                         
                         }
