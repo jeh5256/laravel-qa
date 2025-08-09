@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\Api;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
-use App\Models\Question;
 use App\Models\User;
+use App\Models\Question;
+use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Attributes\Test;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class QuestionsTest extends TestCase
 {
@@ -23,7 +24,7 @@ class QuestionsTest extends TestCase
         $this->actingAs($this->user);
     }
 
-    /** @test */
+    #[Test]
     public function can_create_a_question()
     {
         $question = Question::factory()->make();
@@ -47,7 +48,7 @@ class QuestionsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function must_be_authenicated_to_create_a_question()
     {
         Auth::logout();
@@ -62,7 +63,7 @@ class QuestionsTest extends TestCase
         ->assertStatus(401);
     }
 
-    /** @test */
+    #[Test]
     public function a_user_can_edit_their_question()
     {
         $question = Question::factory(['user_id' => $this->user->id])->create();
@@ -91,7 +92,7 @@ class QuestionsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function a_user_cant_edit_another_users_question()
     {
         $anotherUser = User::factory()->create();
@@ -115,7 +116,7 @@ class QuestionsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function a_user_can_upvote_a_question()
     {
         $question = Question::factory(['vote_count' => 0])->create();
@@ -130,7 +131,7 @@ class QuestionsTest extends TestCase
         ]);
     }
 
-    /** @test */
+   #[Test]
     public function a_user_cant_upvote_a_question_more_than_once()
     {
         $question = Question::factory(['vote_count' => 0])->create();
@@ -147,7 +148,7 @@ class QuestionsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function a_user_can_downvote_a_question()
     {
         $question = Question::factory(['vote_count' => 0])->create();
@@ -162,7 +163,7 @@ class QuestionsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function a_user_cant_downvote_a_question_more_than_once()
     {
         $question = Question::factory(['vote_count' => 0])->create();
@@ -179,7 +180,7 @@ class QuestionsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function a_user_can_favorite_a_question()
     {
         $question = Question::factory()->create();
@@ -196,7 +197,7 @@ class QuestionsTest extends TestCase
 
     }
 
-     /** @test */
+     #[Test]
      public function a_user_can_unfavorite_a_question()
      {
          $question = Question::factory()->create();

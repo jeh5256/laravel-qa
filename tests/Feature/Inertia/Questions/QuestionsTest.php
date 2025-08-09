@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Inertia\Questions;
 
-use App\Models\Answer;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Answer;
 use App\Models\Question;
+use PHPUnit\Framework\Attributes\Test;
 use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -24,7 +25,7 @@ class QuestionsTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    /** @test */
+    #[Test]
     public function can_render_questions_page(): void
     {
         [$question1, $question2, $question3] = Question::factory([
@@ -60,7 +61,7 @@ class QuestionsTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function can_render_questions_create_page()
     {
         $this->actingAs($this->user);
@@ -72,14 +73,14 @@ class QuestionsTest extends TestCase
             );
     }
 
-    /** @test */
+   #[Test]
     public function user_is_redirected_to_login_when_accessing_questions_create_while_unathenticated()
     {
         $this->get('/questions/create')
            ->assertRedirect('/login');
     }
 
-    /** @test */
+    #[Test]
     public function can_render_edit_question_page()
     {
         $question = Question::factory([

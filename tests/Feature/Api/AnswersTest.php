@@ -8,6 +8,7 @@ use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AnswersTest extends TestCase
 {
@@ -23,7 +24,7 @@ class AnswersTest extends TestCase
 		$this->actingAs($this->user);
 	}
 
-	/** @test */
+	#[Test]
 	public function can_answer_a_question()
 	{
 		$question = Question::factory()->create();
@@ -43,7 +44,7 @@ class AnswersTest extends TestCase
 		]);
 	}
 
-	/** @test */
+	#[Test]
 	public function must_be_authenicated_to_answer_a_question()
 	{
 		Auth::logout();
@@ -58,7 +59,7 @@ class AnswersTest extends TestCase
 			->assertStatus(401);
 	}
 
-	/** @test */
+	#[Test]
 	public function a_user_can_edit_their_answer()
 	{
 		$question = Question::factory(['user_id' => $this->user->id])->create();
@@ -92,7 +93,7 @@ class AnswersTest extends TestCase
 		]);
 	}
 
-	/** @test */
+	#[Test]
 	public function a_user_cant_edit_another_users_question()
 	{
 		$anotherUser = User::factory()->create();
@@ -115,7 +116,7 @@ class AnswersTest extends TestCase
 		]);
 	}
 
-	/** @test */
+	#[Test]
 	public function a_user_can_upvote_an_answer()
 	{
 		$question = Question::factory()->create();
@@ -135,7 +136,7 @@ class AnswersTest extends TestCase
 			]);
 	}
 
-	/** @test */
+	#[Test]
 	public function a_user_cant_upvote_an_answer_more_than_once()
 	{
 		$question = Question::factory()->create();
@@ -157,7 +158,7 @@ class AnswersTest extends TestCase
 			]);
 	}
 
-	/** @test */
+	#[Test]
 	public function a_user_can_downvote_an_answer()
 	{
 		$question = Question::factory()->create();
@@ -177,7 +178,7 @@ class AnswersTest extends TestCase
 			]);
 	}
 
-	/** @test */
+	#[Test]
 	public function a_user_cant_downvote_a_question_more_than_once()
 	{
 		$question = Question::factory(['vote_count' => 0])->create();
@@ -199,7 +200,7 @@ class AnswersTest extends TestCase
 			]);
 	}
 
-	/** @test */
+	#[Test]
 	public function a_user_can_mark_an_answer_as_best_answer()
 	{
 		$question = Question::factory([
@@ -220,7 +221,7 @@ class AnswersTest extends TestCase
 			]);
 	}
 
-	/** @test */
+	#[Test]
 	public function a_user_cant_mark_an_answer_as_best_answer_if_they_didnt_ask_the_question()
 	{
 		$otherUser = User::factory(['id' => 999999])->create();
