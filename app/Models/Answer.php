@@ -51,11 +51,6 @@ class Answer extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getBodyHtmlAttribute() 
-    {
-        return Purifier::clean($this->body);
-    }
-
     public function isBestAnswer()
     {
         return $this->id == $this->question->best_answer_id;
@@ -89,5 +84,4 @@ class Answer extends Model
     {
         return $this->getUserVote();
     }
-
 }
