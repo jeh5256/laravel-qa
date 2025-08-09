@@ -9,7 +9,7 @@
 
 <script setup>
     import { defineProps, ref, watch } from 'vue';
-    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+    import { ClassicEditor } from 'ckeditor5';
 
     const props = defineProps({
         content: {
