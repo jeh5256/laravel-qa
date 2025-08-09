@@ -15,9 +15,9 @@ class QuestionPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Question  $question
-     * @return mixed
+     * @return bool
      */
-    public function update(User $user, Question $question)
+    public function update(User $user, Question $question): bool
     {
         return $user->id == $question->user_id;
     }
@@ -27,10 +27,10 @@ class QuestionPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Question  $question
-     * @return mixed
+     * @return bool
      */
-    public function delete(User $user, Question $question)
+    public function delete(User $user, Question $question): bool
     {
-        return $user->id == $question->user_id && $question->answer_countp < 1;
+        return $user->id == $question->user_id && $question->answer_count < 1;
     }
 }

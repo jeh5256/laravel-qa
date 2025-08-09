@@ -11,13 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property bool $is_favorited
  * @property int $answer_count
  * @proerty int $user_id
+ * @property string $body
  * @property-read User $questionFavorites
- * @property-read mixed $body_html
  * @property-read mixed $is_favorited
  */
 class Question extends Model
@@ -68,7 +69,7 @@ class Question extends Model
         return $this->created_at->diffForHumans();
     }
 
-    public function answers()
+    public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
     }

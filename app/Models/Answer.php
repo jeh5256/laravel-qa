@@ -6,15 +6,22 @@ use App\Models\VoteTrait;
 use Mews\Purifier\Facades\Purifier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property string $body
+ * @property bool $is_favorited
+ * @property int $user_id
+ * @property int $answer_count
+ * @property bool $is_best_answer
+ * @property-read Question $question
+ */
 class Answer extends Model
 {   
     use VoteTrait;
     use HasFactory;
 
     protected $fillable = ['body', 'user_id'];
-
-    protected $appends = ['created_date', 'body_html', 'is_best_answer', 'user_voted'];
 
     public static function boot() {
         parent::boot();
@@ -34,22 +41,19 @@ class Answer extends Model
         });
     }
 
-    public function question() {
+    public function question(): BelongsTo
+    {
         return $this->belongsTo(Question::class);
     }
 
-    public function user() {
+    public function user(): BelongsTo 
+    {
         return $this->belongsTo(User::class);
     }
 
     public function getBodyHtmlAttribute() 
     {
         return Purifier::clean($this->body);
-    }
-
-    public function getCreatedDateAttribute() 
-    {
-        return $this->created_at->diffForHumans();
     }
 
     public function isBestAnswer()

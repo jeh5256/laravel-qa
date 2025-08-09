@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\VoteQuestionRequest;
 use App\Models\Question;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Questions\VoteQuestionRequest;
 
 class VoteQuestionController extends Controller
 {

@@ -15,11 +15,11 @@ class AnswerPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Answer  $answer
-     * @return mixed
+     * @return bool
      */
-    public function update(User $user, Answer $answer)
+    public function update(User $user, Answer $answer): bool
     {
-        return $user->id == $answer->user_id;
+        return $user->id === $answer->user_id;
     }
 
     /**
@@ -27,11 +27,11 @@ class AnswerPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Answer  $answer
-     * @return mixed
+     * @return bool
      */
-    public function accept(User $user, Answer $answer)
+    public function accept(User $user, Answer $answer): bool
     {
-        return $user->id == $answer->question->user_id;
+        return $user->id === $answer->question->user_id;
     }
 
     /**
@@ -39,10 +39,10 @@ class AnswerPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Answer  $answer
-     * @return mixed
+     * @return bool
      */
-    public function delete(User $user, Answer $answer)
+    public function delete(User $user, Answer $answer): bool
     {
-        return $user->id == $answer->user_id;
+        return $user->id === $answer->user_id;
     }
 }

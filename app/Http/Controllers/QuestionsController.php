@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Question;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response as IlliminateResponse;
+use App\Http\Resources\AnswerResource;
+use App\Http\Resources\QuestionResource;
 use App\Http\Requests\Questions\CreateQuestionRequest;
 use App\Http\Requests\Questions\UpdateQuestionRequest;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class QuestionsController extends Controller
 {
@@ -20,18 +23,19 @@ class QuestionsController extends Controller
      */
     public function index(): Response
     {
+        $questions = Question::with('user')
+            ->latest()
+            ->paginate(5);
+
         return Inertia::render('Questions/QuestionsIndex', [
-            'questions' => Question::with('user')
-                ->latest()
-                ->paginate(5)
-              
+            'questions' => QuestionResource::collection($questions)  
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Inertia Response
+     * @return \Inertia\Response
      */
     public function create(): Response
     {   
@@ -54,7 +58,7 @@ class QuestionsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Moodels\Question  $question
+     * @param  \App\Models\Question $question
      * @return \Inertia\Response
      */
     public function show(Question $question): Response
@@ -66,10 +70,10 @@ class QuestionsController extends Controller
         }, 'answers.user', 'user']);
 
         return Inertia::render('Questions/QuestionsShow', [
-            'question' => $question,
-            'answers' => $question->answers,
+            'question' => new QuestionResource($question),
+            'answers' => AnswerResource::collection($question->answers),
             'can' => [
-                'markAsBestAnswer' => $question->user_id === auth()?->id(),
+                'markAsBestAnswer' => $question->user_id === auth()->id(),
                 'addAnswer' => auth()->id() ?? false
             ]
         ]);
@@ -83,8 +87,10 @@ class QuestionsController extends Controller
      */
     public function edit(Question $question): Response
     {
+        $question->load('answers');
+        
         return Inertia::render('Questions/QuestionsEdit', [
-            'question' => $question,
+            'question' => new QuestionResource($question),
         ]);
     }
 
@@ -93,9 +99,9 @@ class QuestionsController extends Controller
      *
      * @param  \App\Http\Requests\Questions\UpdateQuestionRequest $request
      * @param  \App\Models\Question  $question
-     * @return \Illuminate\Http\Response|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function update(UpdateQuestionRequest $request, Question $question): Redirector|Response|RedirectResponse|JsonResponse
+    public function update(UpdateQuestionRequest $request, Question $question): Redirector|RedirectResponse|JsonResponse
     {
         $this->authorize('update', $question);
 
@@ -108,7 +114,7 @@ class QuestionsController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'message' => 'Your question has been updated',
-                'body_html' => $question->body_html
+                'body_html' => $question->body
             ]);
         }
 
@@ -119,15 +125,16 @@ class QuestionsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Question  $question
-     * @return \Illuminate\Http\Response|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function destroy(Question $question): Redirector|Response|RedirectResponse
+    public function destroy(Question $question): Redirector|JsonResponse|RedirectResponse
     {
         $this->authorize('delete', $question);
 
         $question->delete();
 
         if (request()->expectsJson()) {
+
             return response()->json([
                 'message' => 'Your question has been deleted'
             ]);
