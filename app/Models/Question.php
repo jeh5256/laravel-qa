@@ -30,9 +30,15 @@ class Question extends Model
         'title', 'slug', 'body', 'user_id'
     ];
 
-    protected $casts = [
-        'body' => CleanHtml::class
-    ];
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'body' => CleanHtml::class
+        ];
+    }
 
     public function user(): BelongsTo 
     {
@@ -74,7 +80,7 @@ class Question extends Model
         return $this->hasMany(Answer::class);
     }
 
-    public function acceptBestAnswer(Answer $answer)
+    public function acceptBestAnswer(Answer $answer): void
     {
         $answer->id === $this->best_answer_id ?
             $this->best_answer_id = null: 
@@ -93,7 +99,7 @@ class Question extends Model
         return $this->questionFavorites()->where('user_id', auth()->id())->count() > 0;
     }
 
-    public function getUserVote()
+    public function getUserVote(): string|bool
     {
         $user_voted = $this->votes()
             ->where('id', auth()->id())
