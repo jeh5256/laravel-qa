@@ -39,11 +39,11 @@ class Answer extends Model
     public static function boot() {
         parent::boot();
 
-        static::created(function($answer) {
+        static::created(function($answer): void {
             $answer->question->increment('answers_count');
         });
 
-        static::deleted(function($answer) {
+        static::deleted(function($answer): void {
             $question = $answer->question;
             $question->decrement('answers_count');
 
