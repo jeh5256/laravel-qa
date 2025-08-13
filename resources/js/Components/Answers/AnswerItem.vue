@@ -100,7 +100,7 @@
     };
 
     const askedAt = computed(() => {
-        return formatDistance(new Date(props.answer.created_at), new Date(), { addSuffix: true });
+        return formatDistance(new Date(props.answer.created_date), new Date(), { addSuffix: true });
     });
 
     const userUpvoted = computed(() => {
