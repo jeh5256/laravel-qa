@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $user_id
  * @property int $answer_count
  * @property bool $is_best_answer
+ * @property bool $user_voted
  * @property-read Question $question
  */
 class Answer extends Model
