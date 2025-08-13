@@ -20,7 +20,9 @@ class AnswerResource extends JsonResource
             'body' => $this->body,
             'is_best_answer' => $this->is_best_answer,
             'user_voted' => $this->user_voted,
-            'created_date' => $this->created_at->diffForHumans()
+            'vote_count' => $this->vote_count,
+            'created_date' => $this->created_at,
+            'user' => UserResource::make($this->whenLoaded('user'))
         ];
     }
 }
