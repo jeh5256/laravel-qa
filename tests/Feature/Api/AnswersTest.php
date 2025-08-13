@@ -30,7 +30,7 @@ class AnswersTest extends TestCase
 		$question = Question::factory()->create();
 
 		$this->json("POST", "/questions/{$question->id}/answers", [
-			'body' => 'this is an answer'
+			'body' => '<p>this is an answer</p>'
 		])
 			->assertStatus(201)
 			->assertJson([
@@ -38,7 +38,7 @@ class AnswersTest extends TestCase
 			]);
 
 		$this->assertDatabaseHas('answers', [
-			'body' => 'this is an answer',
+			'body' => '<p>this is an answer</p>',
 			'question_id' => $question->id,
 			'user_id' => $this->user->id
 		]);
