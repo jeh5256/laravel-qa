@@ -17,11 +17,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $answer_count
  * @property bool $is_best_answer
  * @property bool $user_voted
+ * @property \Illuminate\Database\Eloquent\Relations\MorphPivot&object{vote: int} $pivot
+ * @property-read string $best_answer
+ * @property-read string $status
  * @property-read Question $question
  */
 class Answer extends Model
 {   
     use VoteTrait;
+
+     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
     protected $fillable = ['body', 'user_id'];
@@ -54,20 +59,34 @@ class Answer extends Model
         });
     }
 
+     /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<
+    *    \App\Models\Question,
+    *    $this
+    * > 
+    */
     public function question(): BelongsTo
     {
         return $this->belongsTo(Question::class);
     }
 
+      /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<
+    *    \App\Models\User,
+    *    $this
+    * > 
+    */
     public function user(): BelongsTo 
     {
         return $this->belongsTo(User::class);
     }
 
-    public function getIsBestAnswerAttribute() {
+    public function getIsBestAnswerAttribute(): bool 
+    {
         return $this->id == $this->question->best_answer_id;
     }
 
+    /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+    */
     protected function bestAnswer(): Attribute
     {
         return Attribute::make(
@@ -75,6 +94,9 @@ class Answer extends Model
         );
     }
     
+    /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+    */
     protected function status(): Attribute
     {
         return Attribute::make(
@@ -82,6 +104,9 @@ class Answer extends Model
         );
     }
 
+    /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<?string, never>
+    */
     protected function hasUserVoted(): Attribute
     {
         return Attribute::make(
@@ -106,6 +131,9 @@ class Answer extends Model
             return null;
         }
 
-        return $user_voted->pivot->vote === 1  ? 'upvoted' : 'downvoted';
+         /** @var \Illuminate\Database\Eloquent\Relations\MorphPivot&object{vote: int} $pivot */
+         $pivot = $user_voted->pivot;
+
+        return $pivot->vote === 1  ? 'upvoted' : 'downvoted';
     }
 }

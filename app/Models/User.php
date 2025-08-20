@@ -5,13 +5,17 @@ namespace App\Models;
 use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
     use Notifiable;
+
+    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
     /**
@@ -41,60 +45,99 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function questions() 
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<
+    *    \App\Models\Question,
+    *    $this
+    * > 
+    */
+    public function questions(): HasMany 
     {
         return $this->hasMany(Question::class);
     }
 
-    public function getUrlAttribute() 
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<
+    *    \App\Models\Answer,
+    *    $this
+    * > 
+    */
+    public function answers(): HasMany
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<
+    *    \App\Models\Question,
+    *    $this
+    * > 
+    */
+    public function questionFavorites(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class, 'question_favorites')->withTimestamps();
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\MorphToMany<
+    *    \App\Models\Question,
+    *    $this,
+    *    \Illuminate\Database\Eloquent\Relations\MorphPivot, 
+    *   'pivot'
+    * > 
+    */
+    public function voteQuestions(): MorphToMany
+    {
+        return $this->morphedByMany(Question::class, 'vote');
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\MorphToMany<
+    *    \App\Models\Answer,
+    *    $this,
+    *    \Illuminate\Database\Eloquent\Relations\MorphPivot, 
+    *   'pivot'
+    * > 
+    */
+    public function voteAnswers(): MorphToMany
+    {
+        return $this->morphedByMany(Answer::class, 'vote');
+    }
+
+    public function getUrlAttribute(): string 
     {
         //return route('question.show', $this->id);
         return '#';
     }
 
-    public function answers()
+    public function getAvatarAttribute(): string 
     {
-        return $this->hasMany(Answer::class);
-    }
-
-    public function getAvatarAttribute() {
         $email = $this->email;
         $size = 32;
 
         return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s=" . $size;
     }
 
-    public function questionFavorites()
-    {
-        return $this->belongsToMany(Question::class, 'question_favorites')->withTimestamps();
-    }
-
-    public function voteQuestions()
-    {
-        return $this->morphedByMany(Question::class, 'vote');
-    }
-
-    public function voteAnswers()
-    {
-        return $this->morphedByMany(Answer::class, 'vote');
-    }
-
-    public function voteForQuestion(Question $question, $vote)
+    public function voteForQuestion(Question $question, int $vote): int
     {
         $voteQuestions = $this->voteQuestions();
 
         return $this->_vote($voteQuestions, $question, $vote);
     }
 
-    public function voteForAnswer(Answer $answer, $vote)
+    public function voteForAnswer(Answer $answer, int $vote): int
     {
         $voteAnswers = $this->voteAnswers();
 
         return $this->_vote($voteAnswers, $answer, $vote);   
     }  
 
-    private function _vote($relationship, $model, $vote)
+    /**
+    * @template TModel of \App\Models\Answer|\App\Models\Question
+    *
+    * @param \Illuminate\Database\Eloquent\Relations\MorphToMany<TModel, $this> $relationship
+    * @param TModel $model
+    * @param int $vote
+    * @return int
+    */
+    private function _vote(BelongsToMany $relationship, Answer|Question $model, int $vote): int
     {
+        /** @var \App\Models\Answer|\App\Models\Question|null $existing */
         $existing = $relationship->where('vote_id', $model->id)->withPivot('vote')->first();
 
         if (!$existing) {
@@ -102,7 +145,7 @@ class User extends Authenticatable
         }
         
         if ($existing && $existing->pivot->vote === intval($vote)) {
-            $relationship->toggle($model, ['vote' => $vote]);
+            $relationship->toggle($model);
         }
 
         if ($existing && $existing->pivot->vote !== intval($vote)) {

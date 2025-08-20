@@ -7,23 +7,27 @@ use App\Models\Answer;
 use App\Models\VoteTrait;
 use Illuminate\Support\Str;
 use Mews\Purifier\Casts\CleanHtml;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property bool $is_favorited
  * @property int $answer_count
  * @proerty int $user_id
  * @property string $body
+ * @property \Illuminate\Database\Eloquent\Relations\MorphPivot&object{vote: int} $pivot
  * @property-read User $questionFavorites
  * @property-read mixed $is_favorited
  */
 class Question extends Model
 {
     use VoteTrait;
+
+    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -40,12 +44,37 @@ class Question extends Model
         ];
     }
 
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<
+    *    \App\Models\User,
+    *    $this
+    * > 
+    */
     public function user(): BelongsTo 
     {
         return $this->BelongsTo(User::class);
     }
 
-    public function setSlugAttribute($value): void 
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<
+    *    \App\Models\Answer,
+    *    $this
+    * > 
+    */
+    public function answers(): HasMany
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<
+    *    \App\Models\User,
+    *    $this
+    * > 
+    */
+    public function questionFavorites(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'question_favorites')->withTimestamps();
+    }
+
+    public function setSlugAttribute(string $value): void 
     {
         $slug = !empty($value) ? $value : Str::slug($this->title);
 
@@ -70,14 +99,9 @@ class Question extends Model
         return route('questions.show', $this->slug);
     }
 
-    public function getCreatedDateAttribute() 
+    public function getCreatedDateAttribute(): string 
     {
         return $this->created_at->diffForHumans();
-    }
-
-    public function answers(): HasMany
-    {
-        return $this->hasMany(Answer::class);
     }
 
     public function acceptBestAnswer(Answer $answer): void
@@ -89,11 +113,6 @@ class Question extends Model
         $this->save();
     }
 
-    public function questionFavorites(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'question_favorites')->withTimestamps();
-    }
-
     public function isFavorited(): bool
     {
         return $this->questionFavorites()->where('user_id', auth()->id())->count() > 0;
@@ -102,7 +121,7 @@ class Question extends Model
     public function getUserVote(): string|bool
     {
         $user_voted = $this->votes()
-            ->where('id', auth()->id())
+            ->where('id', Auth::user()->id)
             ->withPivot('vote')
             ->wherePivotNotNull('vote')
             ->first();
@@ -111,30 +130,33 @@ class Question extends Model
             return false;
         }
 
-        return $user_voted->pivot->vote === 1  ? 'upvoted' : 'downvoted';
+        /** @var \Illuminate\Database\Eloquent\Relations\MorphPivot&object{vote: int} $pivot */
+        $pivot = $user_voted->pivot;
+
+        return $pivot->vote === 1  ? 'upvoted' : 'downvoted';
     }
 
-    public function getUserVotedAttribute()
+    public function getUserVotedAttribute(): string|bool
     {
         return $this->getUserVote();
     }
 
-    public function getIsFavoritedAttribute()
+    public function getIsFavoritedAttribute(): bool
     {
         return $this->isFavorited();
     }
 
-    public function getFavoritesCountAttribute()
+    public function getFavoritesCountAttribute(): int
     {
         return $this->questionFavorites->count();
     }
 
-    public function getExcerptAttribute()
+    public function getExcerptAttribute(): string
     {
         return $this->excerpt(250);
     }
 
-    public function excerpt(int $length=250)
+    public function excerpt(int $length=250): string
     {
         return Str::limit($this->body, $length);
     }
