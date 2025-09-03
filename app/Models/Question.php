@@ -8,6 +8,7 @@ use App\Models\VoteTrait;
 use Illuminate\Support\Str;
 use Mews\Purifier\Casts\CleanHtml;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @proerty int $user_id
  * @property string $body
  * @property \Illuminate\Database\Eloquent\Relations\MorphPivot&object{vote: int} $pivot
+ * @property-read string $slug
  * @property-read User $questionFavorites
  * @property-read mixed $is_favorited
  */
@@ -74,36 +76,6 @@ class Question extends Model
         return $this->belongsToMany(User::class, 'question_favorites')->withTimestamps();
     }
 
-    public function setSlugAttribute(string $value): void 
-    {
-        $slug = !empty($value) ? $value : Str::slug($this->title);
-
-        $this->attributes['slug'] = $slug;
-    }
-
-    public function getStatusAttribute(): string 
-    {
-        if ($this->answers_count > 0) {
-            if ($this->best_answer_id) {
-                return "answered-accepted";
-            }
-
-            return "answered";
-        } else {
-            return "unanswered";
-        }
-    }
-
-    public function getUrlAttribute(): string 
-    {
-        return route('questions.show', $this->slug);
-    }
-
-    public function getCreatedDateAttribute(): string 
-    {
-        return $this->created_at->diffForHumans();
-    }
-
     public function acceptBestAnswer(Answer $answer): void
     {
         $answer->id === $this->best_answer_id ?
@@ -111,11 +83,6 @@ class Question extends Model
             $this->best_answer_id = $answer->id;
         
         $this->save();
-    }
-
-    public function isFavorited(): bool
-    {
-        return $this->questionFavorites()->where('user_id', auth()->id())->count() > 0;
     }
 
     public function getUserVote(): string|bool
@@ -136,28 +103,75 @@ class Question extends Model
         return $pivot->vote === 1  ? 'upvoted' : 'downvoted';
     }
 
-    public function getUserVotedAttribute(): string|bool
+    /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+    */
+    protected function slug(): Attribute
     {
-        return $this->getUserVote();
+         return Attribute::make(
+            set: fn(string $value) => !empty($value) ? $value : Str::slug($this->title)
+        );
     }
 
-    public function getIsFavoritedAttribute(): bool
+    /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+    */
+    protected function url(): Attribute
     {
-        return $this->isFavorited();
+        return Attribute::make(
+            get: fn() => route('questions.show', $this->slug)
+        );
     }
 
-    public function getFavoritesCountAttribute(): int
+    /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+    */
+    protected function createdDate(): Attribute
     {
-        return $this->questionFavorites->count();
+        return Attribute::make(
+            get: fn() => $this->created_at->diffForHumans()
+        );
     }
 
-    public function getExcerptAttribute(): string
+    /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+    */
+    protected function userVoted(): Attribute
     {
-        return $this->excerpt(250);
+        return Attribute::make(
+            get: fn() => $this->getUserVote()
+        );
     }
 
-    public function excerpt(int $length=250): string
+    /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+    */
+    protected function isFavorited(): Attribute
     {
-        return Str::limit($this->body, $length);
+        return Attribute::make(
+            get:  fn() => $this->questionFavorites()
+                ->where('user_id', Auth::id())
+                ->count() > 0
+        );
+    }
+
+     /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+    */
+    protected function favoritesCount(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->questionFavorites->count()
+        );
+    }
+
+    /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+    */
+    public function excerpt(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => Str::limit($this->body, 250)
+        );
     }
 }
