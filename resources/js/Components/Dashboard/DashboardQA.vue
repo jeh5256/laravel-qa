@@ -11,7 +11,7 @@
         </span>
         <div class="py-8 px-5 mt-5 bg-slate-100 rounded-lg w-full">
             <h3 v-if="item.title" class="font-bold">{{ item.title }}</h3>
-            <div class="mt-5 overflow-hidden" v-html="item.body_html"></div> 
+            <div class="mt-5 overflow-hidden" v-html="item.body"></div> 
         </div>
     </div>
 </template>
