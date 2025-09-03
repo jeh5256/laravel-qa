@@ -8,7 +8,7 @@
     >
         <font-awesome-icon
             icon="fa-solid fa-arrow-up" 
-            class="text-2xl mb-3 font-extrabold cursor-pointer" 
+            class="text-lg mb-3 font-extrabold cursor-pointer" 
             :class="{
                 'text-orange-400': !props.userUpvoted,
                 'text-orange-600' : props.userUpvoted
@@ -19,7 +19,7 @@
         {{ voteCount }}
         <font-awesome-icon
             icon="fa-solid fa-arrow-up" 
-            class="text-2xl text-blue-400 mt-3 font-extrabold cursor-pointer" 
+            class="text-lg text-blue-400 mt-3 font-extrabold cursor-pointer" 
             :class="{
                 'text-blue-400': !props.userDownVoted,
                 'text-blue-600' : props.userDownVoted
